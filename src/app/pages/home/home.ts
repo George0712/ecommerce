@@ -1,5 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { ProductCard } from '../../shared/components/product-card/product-card';
 
 export interface HomeHeroSlide {
   title: string;
@@ -32,10 +34,13 @@ export interface HomeSeasonDrop {
 export interface HomeProduct {
   name: string;
   price: number;
+  originalPrice?: number;
   href: string;
   image: string;
   imageClass: string;
   brand: string;
+  badge?: string;
+  isNew?: boolean;
 }
 
 export interface HomeFeaturedDrop {
@@ -57,7 +62,7 @@ export interface HomeGenderTile {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ProductCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -70,7 +75,7 @@ export class Home implements OnInit, OnDestroy {
       description: 'Descubre nuestra nueva colección con marcas top como Nike, adidas y Under Armour. Auténtico y con envíos a toda Colombia.',
       image: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2000&auto=format&fit=crop',
       ctaText: 'Ver todo el catálogo',
-      ctaLink: '#categorias',
+      ctaLink: '/catalogo',
     },
     {
       title: 'Rompe tus',
@@ -78,15 +83,15 @@ export class Home implements OnInit, OnDestroy {
       description: 'Lleva tu entrenamiento al siguiente nivel con prendas diseñadas para el máximo rendimiento y confort en cada movimiento.',
       image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2000&auto=format&fit=crop',
       ctaText: 'Comprar destacados',
-      ctaLink: '#destacados',
+      ctaLink: '/catalogo',
     },
     {
       title: 'Estilo y poder',
       accent: 'en cada sprint',
       description: 'Calzado y accesorios que combinan tecnología deportiva premium para que destaques en el asfalto y en el gimnasio.',
-      image: 'https://images.unsplash.com/photo-1552674603-db6ffd4facb5?q=80&w=2000&auto=format&fit=crop',
+      image: 'https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=2000&auto=format&fit=crop',
       ctaText: 'Ver lanzamientos',
-      ctaLink: '#destacados',
+      ctaLink: '/catalogo',
     }
   ];
 
@@ -135,7 +140,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'MUJER',
       name: 'Ropa deportiva para mujer',
-      href: '#',
+      href: '/categoria/mujer',
       image:
         'https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1200&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -143,7 +148,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'HOMBRE',
       name: 'Ropa deportiva para hombre',
-      href: '#',
+      href: '/categoria/hombre',
       image:
         'https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1200&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -154,7 +159,7 @@ export class Home implements OnInit, OnDestroy {
     badge: 'Drop · temporada actual',
     title: 'Capas para entrenar fuerte',
     subtitle: 'Sudaderas, chaquetas ligeras y técnica de marcas líderes. Ideal para gimnasio y salir a correr.',
-    href: '#',
+    href: '/catalogo',
     image:
       'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1200&auto=format&fit=crop',
     accent: 'from-emerald-600/90 via-zinc-900/80 to-zinc-950/95',
@@ -164,7 +169,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'CARDIO',
       name: 'Cardio y máquinas',
-      href: '#',
+      href: '/categoria/cardio',
       image:
         'https://images.unsplash.com/photo-1576678927484-cc907957088c?q=80&w=1000&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -172,7 +177,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'GYM',
       name: 'Pesas y entrenamiento en gimnasio',
-      href: '#',
+      href: '/categoria/gym',
       image:
         'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=1000&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -180,7 +185,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'RUNNING',
       name: 'Running y ruta',
-      href: '#',
+      href: '/categoria/running',
       image:
         'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=1000&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -196,7 +201,7 @@ export class Home implements OnInit, OnDestroy {
     {
       label: 'CALZADO',
       name: 'Zapatillas deportivas',
-      href: '#',
+      href: '/categoria/calzado',
       image:
         'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -208,7 +213,7 @@ export class Home implements OnInit, OnDestroy {
       badge: 'Marzo · alto rendimiento',
       title: 'Nuevos ingresos running',
       subtitle: 'Zapatillas y ropa técnica para ruta y trail. Marcas top, tallas para todos los pies.',
-      href: '#',
+      href: '/categoria/running',
       image:
         'https://images.unsplash.com/photo-1552674603-db6ffd4facb5?q=80&w=1200&auto=format&fit=crop',
       accent: 'from-cyan-600/85 via-zinc-900/75 to-zinc-950/90',
@@ -217,7 +222,7 @@ export class Home implements OnInit, OnDestroy {
       badge: 'Temporada · cancha y sala',
       title: 'Fútbol indoor & outdoor',
       subtitle: 'Botines, camisetas de entreno y accesorios para cancha. Listo para el próximo partido.',
-      href: '#',
+      href: '/details-product/zapatilla-urbana-1',
       image:
         'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?q=80&w=1200&auto=format&fit=crop',
       accent: 'from-orange-600/85 via-zinc-900/75 to-zinc-950/90',
@@ -229,7 +234,7 @@ export class Home implements OnInit, OnDestroy {
       brand: 'Nike',
       name: 'Camiseta Dri-FIT training',
       price: 129900,
-      href: '#',
+      href: '/details-product/zapatilla-urbana-1',
       image:
         'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=600&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -238,7 +243,9 @@ export class Home implements OnInit, OnDestroy {
       brand: 'adidas',
       name: 'Shorts de running con forro',
       price: 159900,
-      href: '#',
+      originalPrice: 199900,
+      badge: '-20%',
+      href: '/details-product/gorra-entrenamiento-vip',
       image:
         'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=600&auto=format&fit=crop',
       imageClass: 'object-cover object-center',
@@ -247,7 +254,8 @@ export class Home implements OnInit, OnDestroy {
       brand: 'Under Armour',
       name: 'Sudadera con capucha técnica',
       price: 249900,
-      href: '#',
+      isNew: true,
+      href: '/details-product/sudadera-capucha-tecnica',
       image:
         'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop',
       imageClass: 'object-cover object-top',
@@ -256,7 +264,7 @@ export class Home implements OnInit, OnDestroy {
       brand: 'Puma',
       name: 'Leggings compresión 7/8',
       price: 189900,
-      href: '#',
+      href: '/details-product/zapatilla-urbana-1',
       image:
         'https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop',
       imageClass: 'object-cover object-center',

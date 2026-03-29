@@ -1,0 +1,40 @@
+<a
+  [routerLink]="product.href"
+  class="cat-product-card group {{ layoutClasses }}"
+>
+  <!-- Image -->
+  <div class="cat-card-media">
+    <img
+      [src]="product.image"
+      [alt]="product.name"
+      class="cat-card-img"
+      [ngClass]="product.imageClass"
+      loading="lazy"
+      width="500"
+      height="667"
+    />
+    <!-- Badges -->
+    @if (product.badge) {
+      <span class="cat-card-badge cat-card-badge--sale">{{ product.badge }}</span>
+    }
+    @if (product.isNew && !product.badge) {
+      <span class="cat-card-badge cat-card-badge--new">Nuevo</span>
+    }
+    <!-- Quick view overlay -->
+    <div class="cat-card-hover-overlay" aria-hidden="true">
+      <span class="cat-card-quick-view">Ver producto</span>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="cat-card-info">
+    <span class="cat-card-brand">{{ product.brand }}</span>
+    <h3 class="cat-card-name">{{ product.name }}</h3>
+    <div class="cat-card-prices">
+      <span class="cat-card-price">{{ formatCOP(product.price) }}</span>
+      @if (product.originalPrice) {
+        <span class="cat-card-original">{{ formatCOP(product.originalPrice) }}</span>
+      }
+    </div>
+  </div>
+</a>

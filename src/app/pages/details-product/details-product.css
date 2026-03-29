@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+/* Gallery smooth image swap */
+.details-gallery img {
+  will-change: transform;
+  backface-visibility: hidden;
+}

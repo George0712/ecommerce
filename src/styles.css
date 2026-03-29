@@ -1,6 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
+@theme {
+  /* Elegant beige/sand pastel (#e2d2bb) overriding emerald */
+  --color-emerald-50: #fcfbf9;
+  --color-emerald-100: #f6f3ed;
+  --color-emerald-200: #eee7d9;
+  --color-emerald-300: #e2d2bb;
+  --color-emerald-400: #dac4a7; /* Ajuste suave */
+  --color-emerald-500: #cdb28e; /* Ajuste principal */
+  --color-emerald-600: #b69871; /* Texto y bordes */
+  --color-emerald-700: #977b58;
+  --color-emerald-800: #7e6547;
+  --color-emerald-900: #665138;
+  --color-emerald-950: #382c1f;
+
+  /* Elegant charcoal (#1d1d1d) overriding zinc */
+  --color-zinc-50: #f9f9f9;
+  --color-zinc-100: #f2f2f2;
+  --color-zinc-200: #e5e5e5;
+  --color-zinc-300: #d4d4d4;
+  --color-zinc-400: #a3a3a3;
+  --color-zinc-500: #737373;
+  --color-zinc-600: #525252;
+  --color-zinc-700: #404040;
+  --color-zinc-800: #262626;
+  --color-zinc-900: #1d1d1d;
+  --color-zinc-950: #0f0f0f;
+
+}
+
 body {
   font-family: 'Poppins', system-ui, sans-serif;
 }
