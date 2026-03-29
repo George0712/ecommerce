@@ -15,7 +15,7 @@
       <!-- Menú Móvil (Hamburguesa) -->
       <button
         type="button"
-        class="header-icon-btn lg:!hidden -ml-2"
+        class="header-icon-btn lg:hidden! -ml-2"
         (click)="toggleMobile()"
         [attr.aria-expanded]="mobileOpen()"
         aria-controls="header-mobile-panel"
@@ -99,17 +99,17 @@
             [value]="searchQuery"
             (input)="onSearchInput($event)"
             placeholder="Buscar..."
-            class="header-search-input w-32 placeholder:text-zinc-400 focus:w-48 lg:w-40 lg:focus:w-56 rounded-full border border-zinc-200 bg-zinc-50/50 py-1.5 pl-9 pr-3 text-sm text-zinc-900 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+            class="header-search-input w-32 placeholder:text-zinc-400 focus:w-48 lg:w-40 lg:focus:w-56 rounded-full border border-zinc-200 bg-zinc-50/50 py-1.5 pl-9 pr-3 text-sm text-zinc-900 transition-all duration-300 ease-in-out focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
           />
         </form>
 
         <!-- Favoritos -->
-        <a href="#" class="header-icon-btn !hidden lg:!inline-flex" aria-label="Favoritos" title="Favoritos">
+        <!-- <a href="#" class="header-icon-btn hidden! lg:inline-flex!" aria-label="Favoritos" title="Favoritos">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-        </a>
+        </a> -->
 
         <!-- Cuenta -->
-        <a href="#" class="header-icon-btn !hidden lg:!inline-flex" aria-label="Mi cuenta" title="Cuenta">
+        <a href="#" class="header-icon-btn hidden! lg:inline-flex!" aria-label="Mi cuenta" title="Cuenta">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
         </a>
 
@@ -124,30 +124,32 @@
         </a>
       </div>
 
-      <!-- Buscador Móvil Completo (Oculto en desktop/tablet de forma responsive usando flex wrap y full width) -->
-      <div class="sm:hidden w-full order-3 mt-3 pb-2">
-        <form class="relative" role="search" (submit)="$event.preventDefault()">
-          <label class="sr-only" for="header-search-mobile">Buscar</label>
-          <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          </span>
-          <input
-            id="header-search-mobile"
-            type="search"
-            name="q"
-            autocomplete="off"
-            [value]="searchQuery"
-            (input)="onSearchInput($event)"
-            placeholder="Buscar productos y marcas..."
-            class="header-search-input w-full rounded-md border border-zinc-200 bg-zinc-50 py-2.5 pl-10 pr-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/25"
-          />
-        </form>
-      </div>
+      <!-- El buscador móvil fue reubicado dentro del panel desplegable para optimizar el espacio -->
     </div>
 
     <!-- Panel Móvil Desplegable -->
     @if (mobileOpen()) {
       <div id="header-mobile-panel" class="absolute top-full left-0 right-0 border-b border-zinc-200 bg-white px-4 py-4 shadow-xl lg:hidden z-40 transform origin-top animate-fade-in-down">
+        <!-- Buscador Móvil Integrado -->
+        <div class="mb-5 sm:hidden">
+          <form class="relative" role="search" (submit)="$event.preventDefault()">
+            <label class="sr-only" for="header-search-mobile-panel">Buscar</label>
+            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input
+              id="header-search-mobile-panel"
+              type="search"
+              name="q"
+              autocomplete="off"
+              [value]="searchQuery"
+              (input)="onSearchInput($event)"
+              placeholder="Buscar productos y marcas..."
+              class="w-full rounded-md border border-zinc-200 bg-zinc-50 py-2.5 pl-10 pr-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/25"
+            />
+          </form>
+        </div>
+
         <ul class="flex flex-col gap-1">
           <li>
             <a routerLink="/" class="block rounded-md px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" (click)="closeMobile()">Inicio</a>
@@ -167,10 +169,10 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               Mi cuenta
             </a>
-            <a href="#" class="flex items-center gap-3 py-2 text-sm font-semibold text-zinc-600 hover:text-emerald-600 mt-2" (click)="closeMobile()">
+            <!-- <a href="#" class="flex items-center gap-3 py-2 text-sm font-semibold text-zinc-600 hover:text-emerald-600 mt-2" (click)="closeMobile()">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
               Mis favoritos
-            </a>
+            </a> -->
         </div>
       </div>
     }

@@ -194,10 +194,16 @@
 
 .home-gender-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0;
   width: 100%;
   max-width: 100vw;
+}
+
+@media (min-width: 640px) {
+  .home-gender-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .home-gender-tile {
@@ -205,7 +211,7 @@
   display: block;
   overflow: hidden;
   width: 100%;
-  height: min(50vw, 43vh, 380px);
+  height: min(65vw, 50vh, 450px);
   outline: none;
 }
 
@@ -392,25 +398,76 @@
 }
 
 @media (max-width: 767px) {
+  .home-cat-bleed {
+    width: 100vw;
+    margin: 0;
+    left: 0;
+    transform: none; /* Ocupa 100% en móvil */
+  }
+
   .home-cat-strip {
+    flex-direction: row;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: 0.5rem;
+    padding: 0; /* Sin padding horizontal */
+    gap: 0;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(161 161 170) transparent;
+  }
+  .home-cat-strip::-webkit-scrollbar {
+    display: none;
   }
 
-  .home-cat-item {
-    flex: 0 0 min(72vw, 17.5rem);
-    scroll-snap-align: start;
+  /* Usamos clip-path y superposición para lograr cortes perfectos sin bordes en blanco */
+  .home-cat-item,
+  .home-cat-item:hover,
+  .home-cat-item:focus-visible,
+  .home-cat-item:active {
+    flex: 0 0 92vw;
+    width: 92vw;
+    min-height: 250px;
+    height: 48vh;
+    transform: none !important; /* Desactivamos el skew */
+    border: none;
+    border-radius: 0;
+    scroll-snap-align: center;
+    margin-right: -12vw; /* Solapa la siguiente tarjeta para encajar el corte */
+    clip-path: polygon(12vw 0, 100% 0, calc(100% - 12vw) 100%, 0 100%);
   }
 
-  .home-cat-item:hover {
-    flex: 0 0 min(72vw, 17.5rem);
+  /* Primera tarjeta: borde izquierdo recto */
+  .home-cat-item:first-child,
+  .home-cat-item:first-child:hover,
+  .home-cat-item:first-child:focus-visible,
+  .home-cat-item:first-child:active {
+    flex: 0 0 80vw;
+    width: 80vw;
+    margin-left: 0;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 12vw) 100%, 0 100%);
   }
 
-  .home-cat-item:focus-visible {
-    flex: 0 0 min(72vw, 17.5rem);
+  /* Última tarjeta: borde derecho recto */
+  .home-cat-item:last-child,
+  .home-cat-item:last-child:hover,
+  .home-cat-item:last-child:focus-visible,
+  .home-cat-item:last-child:active {
+    flex: 0 0 80vw;
+    width: 80vw;
+    margin-right: 0;
+    clip-path: polygon(12vw 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .home-cat-item-inner {
+    transform: none !important; /* Sin contrarrestar el skew */
+    width: 100%;
+    left: 0;
+  }
+
+  /* Línea divisoria blanca simulada mediante el contenedor si es necesario, 
+   o simplificada dejándola sin borde visible para diseño moderno */
+
+  .home-cat-label {
+    font-size: 1.5rem;
+    bottom: 1.5rem;
   }
 }

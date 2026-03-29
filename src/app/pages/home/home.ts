@@ -274,4 +274,30 @@ export class Home implements OnInit, OnDestroy {
       maximumFractionDigits: 0,
     }).format(value);
   }
+
+  // --- Lógica para Carruseles de Productos (Móvil) ---
+  masVendidosIndex = 0;
+  recomendadosIndex = 0;
+
+  get productPages(): number[] {
+    // Muestra 2 productos a la vez en móvil, divide el total entre 2
+    const totalPages = Math.ceil(this.products.length / 2);
+    return Array.from({ length: totalPages }, (_, i) => i);
+  }
+
+  onScrollProducts(event: Event, type: 'mas' | 'rec') {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const target = event.target as HTMLElement;
+    // Calcula la página actual basada en el ancho del contenedor (scroll por vista completa)
+    const index = Math.round(target.scrollLeft / target.clientWidth);
+    if (type === 'mas') this.masVendidosIndex = index;
+    else this.recomendadosIndex = index;
+  }
+
+  scrollToProductPage(index: number, container: HTMLElement, type: 'mas' | 'rec') {
+    if (!isPlatformBrowser(this.platformId)) return;
+    container.scrollTo({ left: index * container.clientWidth, behavior: 'smooth' });
+    if (type === 'mas') this.masVendidosIndex = index;
+    else this.recomendadosIndex = index;
+  }
 }
