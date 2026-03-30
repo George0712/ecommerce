@@ -32,4 +32,6 @@
 
 body {
   font-family: 'Poppins', system-ui, sans-serif;
+  overflow-x: hidden; /* Evita que el contenido se vea desfasado hacia un lado en dispositivos */
+  width: 100%;
 }

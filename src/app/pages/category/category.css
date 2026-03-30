@@ -16,20 +16,21 @@
 }
 
 /* ── Layout grid: sidebar + main ── */
-.cat-layout {
+  .cat-layout {
   display: grid;
   grid-template-columns: 1fr;
   max-width: 90rem;
   margin: 0 auto;
   padding: 0 1rem 4rem;
   gap: 0;
+  overflow: hidden;
 }
 
 @media (min-width: 1024px) {
   .cat-layout {
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 260px minmax(0, 1fr);
     gap: 0 2.5rem;
-    padding: 0 2rem 4rem;
+    padding: 0 2.5rem 4rem;
     align-items: start;
   }
 }
@@ -269,6 +270,8 @@
    ============================================================= */
 .cat-content {
   padding-top: 2rem;
+  min-width: 0;
+  width: 100%; /* Corta cualquier elemento interno que genere empuje a la derecha */
 }
 
 /* =============================================================
@@ -474,27 +477,27 @@
    ============================================================= */
 .cat-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
 @media (min-width: 640px) {
   .cat-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.25rem;
   }
 }
 
 @media (min-width: 900px) {
   .cat-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
 }
 
 @media (min-width: 1280px) {
   .cat-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
   }
 }

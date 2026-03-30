@@ -1,0 +1,132 @@
+<div class="bg-zinc-50 min-h-screen pt-12 pb-24 font-sans text-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl sm:text-4xl font-black uppercase italic tracking-tight text-[#1d1d1d]">
+        Tu Carrito de Compras
+      </h1>
+      <a routerLink="/catalogo" class="hidden sm:inline-flex items-center text-sm font-bold uppercase tracking-wider text-zinc-500 hover:text-[#1d1d1d] transition-colors underline-offset-4 hover:underline">
+        Continuar Comprando
+      </a>
+    </div>
+
+    @if (cartItems().length === 0) {
+      <div class="bg-white p-12 text-center rounded-xl shadow-sm border border-zinc-100 mb-8 flex flex-col items-center justify-center min-h-[400px]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-zinc-300 mb-6"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <h2 class="text-2xl font-bold text-zinc-900 mb-2">Tu carrito está vacío</h2>
+        <p class="text-zinc-500 mb-8">Parece que aún no has añadido nada a tu carrito.</p>
+        <a routerLink="/catalogo" class="inline-flex justify-center items-center h-12 px-8 bg-[#1d1d1d] text-sm font-bold uppercase tracking-wider text-[#e2d2bb] hover:bg-[#0f0f0f] hover:shadow-lg active:scale-[0.98] transition-all cursor-pointer">
+          Explorar Colección
+        </a>
+      </div>
+    } @else {
+      <div class="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
+        <!-- Lista de Productos (Items) -->
+        <div class="lg:col-span-8">
+          <!-- Cabecera Tabla Desktop -->
+          <div class="hidden lg:grid lg:grid-cols-12 gap-4 pb-4 border-b border-zinc-200 text-xs font-bold uppercase tracking-wider text-zinc-500">
+            <div class="col-span-6">Producto</div>
+            <div class="col-span-2 text-center">Precio</div>
+            <div class="col-span-2 text-center">Cantidad</div>
+            <div class="col-span-2 text-right">Total</div>
+          </div>
+
+          <ul class="divide-y divide-zinc-200 border-b border-zinc-200">
+            @for (item of cartItems(); track item.id) {
+              <li class="py-6 flex flex-row items-center gap-4 sm:gap-6 group">
+                <!-- Imagen -->
+                <a [routerLink]="['/details-product', item.id]" class="h-24 w-24 sm:h-32 sm:w-32 shrink-0 bg-zinc-100 overflow-hidden relative cursor-pointer block">
+                  <img [src]="item.image" [alt]="item.name" class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                </a>
+                
+                <!-- Info Producto -->
+                <div class="flex-1 grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-6 items-center">
+                  <div class="sm:col-span-5 flex flex-col justify-center">
+                    <p class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-zinc-500 mb-1">{{ item.brand }}</p>
+                    <h3 class="text-sm sm:text-base font-bold uppercase tracking-tight text-[#1d1d1d] leading-tight mb-1 sm:mb-2">
+                      <a [routerLink]="['/details-product', item.id]" class="hover:text-emerald-600 transition-colors cursor-pointer">{{ item.name }}</a>
+                    </h3>
+                    <p class="text-xs sm:text-sm text-zinc-500 capitalize">{{ item.color }} · Talla {{ item.size }}</p>
+                    <button (click)="removeItem(item.id)" class="hidden sm:inline-flex text-sm font-semibold text-zinc-400 hover:text-red-500 mt-4 text-left items-center gap-1 transition-colors cursor-pointer w-fit uppercase tracking-wide">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                      Quitar
+                    </button>
+                  </div>
+
+                  <!-- Precio Unitario (Hidden Mobile) -->
+                  <div class="hidden sm:block sm:col-span-3 text-center">
+                    <p class="text-sm font-bold tabular-nums text-zinc-900">{{ formatCOP(item.price) }}</p>
+                  </div>
+
+                  <!-- Mobile Actions (Cantidad + Quitar + Total) -->
+                  <div class="sm:hidden flex flex-wrap items-center justify-between gap-y-3 mt-1 w-full">
+                    <div class="flex items-center gap-3">
+                      <div class="flex items-center border border-zinc-300 h-8 sm:h-10 bg-white rounded-sm">
+                        <button (click)="decreaseQuantity(item.id)" class="px-2.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium h-full">&minus;</button>
+                        <span class="w-6 text-center text-xs sm:text-sm font-bold text-zinc-900 select-none">{{ item.quantity }}</span>
+                        <button (click)="increaseQuantity(item.id)" class="px-2.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium h-full">&#43;</button>
+                      </div>
+                      <button (click)="removeItem(item.id)" class="text-xs font-semibold text-zinc-400 hover:text-red-500 underline underline-offset-2">Quitar</button>
+                    </div>
+                    <div class="font-bold tabular-nums text-[#1d1d1d] text-base">
+                      {{ formatCOP(item.price * item.quantity) }}
+                    </div>
+                  </div>
+
+                  <!-- Cantidad Desktop -->
+                  <div class="hidden sm:flex sm:col-span-2 items-center justify-center">
+                    <div class="flex items-center border border-zinc-300 h-10 bg-white">
+                      <button (click)="decreaseQuantity(item.id)" class="px-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium h-full">&minus;</button>
+                      <span class="w-8 text-center text-sm font-bold text-zinc-900 select-none">{{ item.quantity }}</span>
+                      <button (click)="increaseQuantity(item.id)" class="px-3 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium h-full">&#43;</button>
+                    </div>
+                  </div>
+
+                  <!-- Total Item Desktop -->
+                  <div class="hidden sm:flex sm:col-span-2 justify-end items-center font-bold tabular-nums text-[#1d1d1d] text-base">
+                    {{ formatCOP(item.price * item.quantity) }}
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <!-- Resumen del Pedido -->
+        <div class="lg:col-span-4 mt-10 lg:mt-0">
+          <div class="bg-white border border-zinc-200 p-6 sm:p-8 shadow-xs sticky top-24">
+            <h2 class="text-xl font-bold uppercase tracking-tight text-[#1d1d1d] mb-6 border-b border-zinc-100 pb-4">
+              Resumen de Compra
+            </h2>
+            
+            <dl class="space-y-4 text-sm text-zinc-600 mb-6">
+              <div class="flex items-center justify-between">
+                <dt>Subtotal</dt>
+                <dd class="font-bold tabular-nums text-zinc-900">{{ formatCOP(cartSubtotal) }}</dd>
+              </div>
+              <div class="flex items-center justify-between">
+                <dt>Envío estimado <span class="block text-xs text-emerald-600 mt-0.5">Gratis en compras mayores a $1M</span></dt>
+                <dd class="font-bold tabular-nums" [ngClass]="shippingCost === 0 ? 'text-emerald-600' : 'text-zinc-900'">
+                  {{ shippingCost === 0 ? 'Gratis' : formatCOP(shippingCost) }}
+                </dd>
+              </div>
+            </dl>
+            
+            <div class="border-t border-zinc-200 pt-6 flex items-center justify-between mb-8">
+              <dt class="text-base font-bold uppercase tracking-wider text-[#1d1d1d]">Total</dt>
+              <dd class="text-2xl font-black tabular-nums text-[#1d1d1d]">{{ formatCOP(cartTotal) }}</dd>
+            </div>
+            
+            <a routerLink="/checkout" class="w-full flex items-center justify-center bg-[#1d1d1d] h-[56px] px-6 text-sm font-bold uppercase tracking-wide text-[#e2d2bb] transition-all duration-300 hover:bg-[#0f0f0f] hover:shadow-xl active:scale-[0.98] cursor-pointer mb-4">
+              Proceder al Pago
+            </a>
+            
+            <div class="flex items-center justify-center gap-2 text-zinc-500 mt-6 pt-6 border-t border-zinc-100">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+               <span class="text-xs font-semibold uppercase tracking-wider">Pago Seguro Garantizado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,20 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-cart',
   imports: [RouterLink, NgClass],
-  templateUrl: './header.html',
-  styleUrl: './header.css',
+  templateUrl: './cart.html',
+  styleUrl: './cart.css',
 })
-export class Header {
-  readonly mobileOpen = signal(false);
-  readonly isCartOpen = signal(false);
-  /** Cantidad de ítems en carrito (conectar con tu estado real más adelante). */
-  readonly cartCount = signal(2);
-
+export class Cart {
   readonly cartItems = signal([
     {
       id: 1,
@@ -42,38 +36,20 @@ export class Header {
     return this.cartItems().reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
 
+  get shippingCost(): number {
+    return this.cartSubtotal > 1000000 ? 0 : 15000;
+  }
+
+  get cartTotal(): number {
+    return this.cartSubtotal + this.shippingCost;
+  }
+
   formatCOP(value: number): string {
     return new Intl.NumberFormat('es-CO', {
       style: 'currency',
       currency: 'COP',
       minimumFractionDigits: 0,
     }).format(value);
-  }
-
-  searchQuery = '';
-
-  onSearchInput(event: Event): void {
-    const el = event.target as HTMLInputElement;
-    this.searchQuery = el.value;
-  }
-
-  toggleMobile(): void {
-    this.mobileOpen.update((open) => !open);
-    if (this.mobileOpen()) this.isCartOpen.set(false);
-  }
-
-  closeMobile(): void {
-    this.mobileOpen.set(false);
-  }
-
-  toggleCart(event?: Event): void {
-    if (event) event.preventDefault();
-    this.isCartOpen.update((open) => !open);
-    if (this.isCartOpen()) this.mobileOpen.set(false);
-  }
-
-  closeCart(): void {
-    this.isCartOpen.set(false);
   }
 
   increaseQuantity(id: number): void {
@@ -91,6 +67,5 @@ export class Header {
 
   removeItem(id: number): void {
     this.cartItems.update(items => items.filter(i => i.id !== id));
-    this.cartCount.set(this.cartItems().length);
   }
 }
