@@ -35,6 +35,11 @@ export const routes: Routes = [
         component: Checkout,
     },
     {
+        path: 'admin',
+        loadChildren: () =>
+            import('./pages/admin/admin.routes').then(m => m.adminRoutes),
+    },
+    {
         path: '**',
         redirectTo: '',
     },

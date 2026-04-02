@@ -1,0 +1,85 @@
+<div class="admin-shell" [class.sidebar-collapsed]="sidebarCollapsed()">
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" [class.active]="mobileMenuOpen()" (click)="closeMobileMenu()"></div>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" [class.mobile-open]="mobileMenuOpen()">
+    <div class="sidebar-header">
+      <div class="logo-area">
+        <span class="logo-icon material-symbols-outlined">storefront</span>
+        <span class="logo-text">Admin</span>
+      </div>
+      <button class="collapse-btn" (click)="toggleSidebar()" aria-label="Colapsar menú">
+        <span class="material-symbols-outlined">{{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}</span>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of navItems; track item.route) {
+        <a
+          class="nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/admin' }"
+          (click)="closeMobileMenu()"
+        >
+          <span class="material-symbols-outlined nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+          @if (item.badge) {
+            <span class="nav-badge">{{ item.badge }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <a class="nav-item" routerLink="/">
+        <span class="material-symbols-outlined nav-icon">exit_to_app</span>
+        <span class="nav-label">Ir a la tienda</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="admin-main">
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" (click)="toggleMobileMenu()" aria-label="Abrir menú">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="search-box">
+          <span class="material-symbols-outlined search-icon">search</span>
+          <input type="text" placeholder="Buscar productos, pedidos, clientes..." class="search-input" />
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a routerLink="/admin/notificaciones" class="topbar-btn" aria-label="Notificaciones">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="notification-dot"></span>
+        </a>
+        <button class="topbar-btn" aria-label="Mensajes">
+          <span class="material-symbols-outlined">mail</span>
+        </button>
+        <div class="admin-profile">
+          <div class="avatar">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="profile-info">
+            <span class="profile-name">Administrador</span>
+            <span class="profile-role">Super Admin</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="admin-content">
+      <router-outlet />
+    </main>
+  </div>
+  
+  <!-- Global Notifications -->
+  <app-notification></app-notification>
+</div>

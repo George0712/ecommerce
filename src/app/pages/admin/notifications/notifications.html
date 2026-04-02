@@ -1,0 +1,94 @@
+<div class="notifications-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">
+        Centro de Notificaciones
+        @if (unreadCount > 0) {
+          <span class="unread-badge">{{ unreadCount }}</span>
+        }
+      </h1>
+      <p class="page-subtitle">Revisa las alertas, eventos y actualizaciones del sistema</p>
+    </div>
+    <div class="header-actions">
+      @if (unreadCount > 0) {
+        <button class="btn-outline" (click)="markAllRead()">
+          <span class="material-symbols-outlined">done_all</span>
+          Marcar todas como leídas
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Filter Tabs -->
+  <div class="filter-tabs">
+    @for (f of filters; track f.key) {
+      <button
+        class="filter-tab"
+        [class.active]="selectedFilter() === f.key"
+        (click)="setFilter(f.key)"
+      >
+        <span class="material-symbols-outlined">{{ f.icon }}</span>
+        {{ f.label }}
+        @if (f.key === 'unread' && unreadCount > 0) {
+          <span class="tab-count">{{ unreadCount }}</span>
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Notification Feed -->
+  <div class="notification-feed">
+    @for (n of filteredNotifications; track n.id) {
+      <div
+        class="notification-item"
+        [class.unread]="!n.read"
+        [style.--accent-color]="getTypeColor(n.type)"
+      >
+        <div class="notif-indicator"></div>
+
+        <div class="notif-icon-wrap" [attr.data-type]="n.type">
+          <span class="material-symbols-outlined">{{ n.icon }}</span>
+        </div>
+
+        <div class="notif-body">
+          <div class="notif-header">
+            <span class="notif-title">{{ n.title }}</span>
+            <span class="notif-time">
+              <span class="material-symbols-outlined">schedule</span>
+              {{ n.time }} · {{ n.date }}
+            </span>
+          </div>
+          <p class="notif-message">{{ n.message }}</p>
+        </div>
+
+        <div class="notif-actions">
+          <button
+            class="notif-action-btn"
+            [title]="n.read ? 'Marcar como no leída' : 'Marcar como leída'"
+            (click)="toggleRead(n.id)"
+          >
+            <span class="material-symbols-outlined">
+              {{ n.read ? 'mark_email_unread' : 'mark_email_read' }}
+            </span>
+          </button>
+          <button
+            class="notif-action-btn danger"
+            title="Eliminar notificación"
+            (click)="removeNotification(n.id)"
+          >
+            <span class="material-symbols-outlined">delete</span>
+          </button>
+        </div>
+      </div>
+    }
+
+    @if (filteredNotifications.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined empty-icon">notifications_off</span>
+        <h3>No hay notificaciones</h3>
+        <p>No se encontraron notificaciones con el filtro seleccionado.</p>
+      </div>
+    }
+  </div>
+</div>

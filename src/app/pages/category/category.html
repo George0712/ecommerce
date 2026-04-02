@@ -144,32 +144,34 @@
     <div class="cat-content">
 
       <!-- 1. CATEGORY BANNER -->
-      <div class="cat-banner" role="img" [attr.aria-label]="category.name">
-        <img
-          [src]="category.banner"
-          [alt]="category.name"
-          class="cat-banner-img"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <!-- Gradient overlay -->
-        <div class="cat-banner-overlay" aria-hidden="true"></div>
+      @if (category.slug !== 'all') {
+        <div class="cat-banner" role="img" [attr.aria-label]="category.name">
+          <img
+            [src]="category.banner"
+            [alt]="category.name"
+            class="cat-banner-img"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <!-- Gradient overlay -->
+          <div class="cat-banner-overlay" aria-hidden="true"></div>
 
-        <!-- Banner content -->
-        <div class="cat-banner-content">
-          <!-- Breadcrumb -->
-          <nav class="cat-breadcrumb" aria-label="Breadcrumb">
-            <ol class="flex items-center gap-2 text-xs text-white/60">
-              <li><a routerLink="/" class="hover:text-white transition-colors">Inicio</a></li>
-              <li aria-hidden="true">/</li>
-              <li class="text-white font-medium">{{ category.name }}</li>
-            </ol>
-          </nav>
+          <!-- Banner content -->
+          <div class="cat-banner-content">
+            <!-- Breadcrumb -->
+            <nav class="cat-breadcrumb" aria-label="Breadcrumb">
+              <ol class="flex items-center gap-2 text-xs text-white/60">
+                <li><a routerLink="/" class="hover:text-white transition-colors">Inicio</a></li>
+                <li aria-hidden="true">/</li>
+                <li class="text-white font-medium">{{ category.name }}</li>
+              </ol>
+            </nav>
 
-          <h1 class="cat-banner-title">{{ category.name }}</h1>
-          <p class="cat-banner-desc">{{ category.description }}</p>
+            <h1 class="cat-banner-title">{{ category.name }}</h1>
+            <p class="cat-banner-desc">{{ category.description }}</p>
+          </div>
         </div>
-      </div>
+      }
 
       <!-- 2. TOOLBAR: Mobile filter btn + Sort -->
       <div class="cat-toolbar">

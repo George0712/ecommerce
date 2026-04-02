@@ -1,54 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-import { NgClass } from '@angular/common';
+import { CartService } from '../../services/cart.service';
+import { CartSidebarComponent } from '../cart-sidebar/cart-sidebar';
+import { MobileNavComponent } from '../mobile-nav/mobile-nav';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, NgClass],
+  imports: [RouterLink, CartSidebarComponent, MobileNavComponent],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
+  public cartService = inject(CartService);
+
   readonly mobileOpen = signal(false);
-  readonly isCartOpen = signal(false);
-  /** Cantidad de ítems en carrito (conectar con tu estado real más adelante). */
-  readonly cartCount = signal(2);
-
-  readonly cartItems = signal([
-    {
-      id: 1,
-      name: 'Nike Air Max 270',
-      brand: 'Nike',
-      price: 650000,
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      color: 'Rojo/Negro',
-      size: '42',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'adidas Ultraboost 22',
-      brand: 'adidas',
-      price: 890000,
-      image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      color: 'Blanco',
-      size: '40',
-      quantity: 1,
-    }
-  ]);
-
-  get cartSubtotal(): number {
-    return this.cartItems().reduce((acc, item) => acc + item.price * item.quantity, 0);
-  }
-
-  formatCOP(value: number): string {
-    return new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
 
   searchQuery = '';
 
@@ -59,7 +24,7 @@ export class Header {
 
   toggleMobile(): void {
     this.mobileOpen.update((open) => !open);
-    if (this.mobileOpen()) this.isCartOpen.set(false);
+    if (this.mobileOpen()) this.cartService.closeCart();
   }
 
   closeMobile(): void {
@@ -68,29 +33,7 @@ export class Header {
 
   toggleCart(event?: Event): void {
     if (event) event.preventDefault();
-    this.isCartOpen.update((open) => !open);
-    if (this.isCartOpen()) this.mobileOpen.set(false);
-  }
-
-  closeCart(): void {
-    this.isCartOpen.set(false);
-  }
-
-  increaseQuantity(id: number): void {
-    this.cartItems.update(items => items.map(i => i.id === id ? { ...i, quantity: i.quantity + 1 } : i));
-  }
-
-  decreaseQuantity(id: number): void {
-    this.cartItems.update(items => items.map(i => {
-      if (i.id === id && i.quantity > 1) {
-        return { ...i, quantity: i.quantity - 1 };
-      }
-      return i;
-    }));
-  }
-
-  removeItem(id: number): void {
-    this.cartItems.update(items => items.filter(i => i.id !== id));
-    this.cartCount.set(this.cartItems().length);
+    this.cartService.toggleCart();
+    if (this.cartService.isCartOpen()) this.mobileOpen.set(false);
   }
 }

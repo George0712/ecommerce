@@ -1,0 +1,259 @@
+<div class="products-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Pedidos</h1>
+      <p class="page-subtitle">Gestiona las ventas y despachos de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar CSV
+      </button>
+      <button class="btn-primary">
+        <span class="material-symbols-outlined">add</span>
+        Crear Pedido Manual
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" data-color="blue">
+        <span class="material-symbols-outlined">shopping_cart</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalOrders }}</span>
+        <span class="stat-label">Total pedidos</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="amber">
+        <span class="material-symbols-outlined">pending_actions</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ pendingOrders }}</span>
+        <span class="stat-label">Pendientes / Reserva</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="emerald">
+        <span class="material-symbols-outlined">local_shipping</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ shippedOrders }}</span>
+        <span class="stat-label">Enviados</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="emerald">
+        <span class="material-symbols-outlined">account_balance_wallet</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ formatCOP(revenue) }}</span>
+        <span class="stat-label">Ingresos completados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input
+          type="text"
+          placeholder="Buscar por ID de pedido, cliente o correo..."
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+      <select class="filter-select" [(ngModel)]="selectedStatus">
+        <option value="">Todos los estados</option>
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ getDisplayStatus(status) }}</option>
+        }
+      </select>
+      @if (searchQuery || selectedStatus) {
+        <button class="clear-btn" (click)="clearFilters()">
+          <span class="material-symbols-outlined">close</span>
+          Limpiar
+        </button>
+      }
+    </div>
+    <div class="toolbar-right">
+      <span class="result-count">{{ filteredOrders.length }} pedidos</span>
+      <div class="view-toggle">
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'table'"
+          (click)="setView('table')"
+          aria-label="Vista tabla"
+        >
+          <span class="material-symbols-outlined">view_list</span>
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'grid'"
+          (click)="setView('grid')"
+          aria-label="Vista grilla"
+        >
+          <span class="material-symbols-outlined">grid_view</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  @if (selectedIds().size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-count">{{ selectedIds().size }} seleccionados</span>
+      <div class="bulk-actions">
+        <button class="bulk-btn" (click)="markAsShipped()">
+          <span class="material-symbols-outlined">local_shipping</span> Marcar como Enviado
+        </button>
+        <button class="bulk-btn" (click)="printGuides()">
+          <span class="material-symbols-outlined">print</span> Imprimir Guías
+        </button>
+        <button class="bulk-btn danger" (click)="cancelOrders()">
+          <span class="material-symbols-outlined">cancel</span> Cancelar Pedidos
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- TABLE VIEW -->
+  @if (currentView() === 'table') {
+    <div class="table-card">
+    <div class="table-wrapper">
+      <table class="products-table">
+        <thead>
+          <tr>
+            <th class="th-check">
+              <input
+                type="checkbox"
+                class="custom-check"
+                [checked]="selectAll()"
+                (change)="toggleSelectAll()"
+              />
+            </th>
+            <th>Pedido</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Estado</th>
+            <th class="whitespace-nowrap">Pago</th>
+            <th class="whitespace-nowrap">Total</th>
+            <th class="th-actions whitespace-nowrap" style="min-width: 100px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (order of filteredOrders; track order.id) {
+            <tr [class.selected]="isSelected(order.id)">
+              <td class="td-check">
+                <input
+                  type="checkbox"
+                  class="custom-check"
+                  [checked]="isSelected(order.id)"
+                  (change)="toggleSelect(order.id)"
+                />
+              </td>
+              <td class="td-product">
+                <div class="product-info">
+                  <span class="product-name font-mono">{{ order.id }}</span>
+                  <span class="product-brand">{{ order.itemsCount }} artículo(s)</span>
+                </div>
+              </td>
+              <td class="td-sku">{{ order.date }}</td>
+              <td>
+                <div class="flex flex-col gap-1">
+                   <span class="font-semibold text-zinc-200 text-[13px]">{{ order.customerName }}</span>
+                   <span class="text-xs text-zinc-500">{{ order.customerEmail }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(order.status)">
+                  {{ getDisplayStatus(order.status) }}
+                </span>
+                @if(order.status === 'esperando-pago-reserva') {
+                  <span class="block text-[10px] text-amber-500 mt-1 uppercase tracking-wide">Stock Reservado</span>
+                }
+              </td>
+              <td>
+                <span class="category-tag">{{ order.paymentMethod }}</span>
+              </td>
+              <td class="td-price">
+                <span class="current-price">{{ formatCOP(order.total) }}</span>
+              </td>
+              <td class="td-actions">
+                <button class="action-btn" title="Ver Detalle">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Editar">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (filteredOrders.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined empty-icon">shopping_bag</span>
+        <h3>No se encontraron pedidos</h3>
+        <p>Intenta ajustar tus filtros de búsqueda</p>
+      </div>
+    }
+  </div>
+  }
+
+  <!-- GRID VIEW -->
+  @if (currentView() === 'grid') {
+    <div class="products-grid">
+      @for (order of filteredOrders; track order.id) {
+        <div class="product-card" [class.selected]="isSelected(order.id)">
+          <div class="card-body">
+            <div class="flex justify-between items-start mb-2">
+              <span class="font-mono text-sm font-semibold text-zinc-200">{{ order.id }}</span>
+              <span class="status-badge" [class]="getStatusClass(order.status)">
+                {{ getDisplayStatus(order.status) }}
+              </span>
+            </div>
+            
+            <div class="flex flex-col gap-1 mb-4">
+              <span class="font-semibold text-zinc-100">{{ order.customerName }}</span>
+              <span class="text-xs text-zinc-500">{{ order.customerEmail }}</span>
+              <span class="text-xs text-zinc-400 mt-1"><span class="material-symbols-outlined text-[14px] align-middle mr-1">calendar_today</span>{{ order.date }}</span>
+            </div>
+            
+            <div class="card-meta">
+              <span class="card-price">{{ formatCOP(order.total) }}</span>
+              <span class="text-xs text-zinc-500 font-medium">{{ order.itemsCount }} artículo(s)</span>
+            </div>
+            
+            <div class="card-footer">
+              <span class="category-tag">{{ order.paymentMethod }}</span>
+              <div class="card-actions">
+                <button class="action-btn" title="Ver Detalle">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Editar">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (filteredOrders.length === 0) {
+        <div class="empty-state grid-empty">
+          <span class="material-symbols-outlined empty-icon">shopping_bag</span>
+          <h3>No se encontraron pedidos</h3>
+          <p>Intenta ajustar tus filtros de búsqueda</p>
+        </div>
+      }
+    </div>
+  }
+</div>

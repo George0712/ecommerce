@@ -8,7 +8,6 @@
   width: 2.5rem;
   align-items: center;
   justify-content: center;
-  border-radius: 0.375rem;
   color: rgb(39 39 42);
   transition:
     background-color 0.15s ease,
@@ -17,11 +16,16 @@
 
 .header-icon-btn:hover {
   background-color: rgb(244 244 245);
-  color: rgb(5 150 105);
+  color: #1d1d1d;
+}
+
+.header-icon-btn:active {
+  transform: scale(0.92);
+  background-color: #e5e5e5;
 }
 
 .header-icon-btn:focus-visible {
-  outline: 2px solid rgb(16 185 129);
+  outline: 2px solid #1d1d1d;
   outline-offset: 2px;
 }
 

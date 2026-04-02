@@ -1,0 +1,282 @@
+<div class="products-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Productos</h1>
+      <p class="page-subtitle">Gestiona el catálogo de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar
+      </button>
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">upload</span>
+        Importar
+      </button>
+      <a routerLink="/admin/productos/nuevo" class="btn-primary">
+        <span class="material-symbols-outlined">add</span>
+        Nuevo Producto
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" data-color="blue">
+        <span class="material-symbols-outlined">inventory_2</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalProducts }}</span>
+        <span class="stat-label">Total productos</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="emerald">
+        <span class="material-symbols-outlined">check_circle</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ activeProducts }}</span>
+        <span class="stat-label">Activos</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="amber">
+        <span class="material-symbols-outlined">edit_note</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ draftProducts }}</span>
+        <span class="stat-label">Borradores</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="danger">
+        <span class="material-symbols-outlined">error</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ outOfStockProducts }}</span>
+        <span class="stat-label">Agotados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input
+          type="text"
+          placeholder="Buscar por nombre o SKU..."
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+      <select class="filter-select" [(ngModel)]="selectedCategory">
+        <option value="">Todas las categorías</option>
+        @for (cat of categories; track cat) {
+          <option [value]="cat">{{ cat }}</option>
+        }
+      </select>
+      <select class="filter-select" [(ngModel)]="selectedStatus">
+        <option value="">Todos los estados</option>
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status | titlecase }}</option>
+        }
+      </select>
+      @if (searchQuery || selectedCategory || selectedStatus) {
+        <button class="clear-btn" (click)="clearFilters()">
+          <span class="material-symbols-outlined">close</span>
+          Limpiar
+        </button>
+      }
+    </div>
+    <div class="toolbar-right">
+      <span class="result-count">{{ filteredProducts.length }} productos</span>
+      <div class="view-toggle">
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'table'"
+          (click)="setView('table')"
+          aria-label="Vista tabla"
+        >
+          <span class="material-symbols-outlined">view_list</span>
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'grid'"
+          (click)="setView('grid')"
+          aria-label="Vista grilla"
+        >
+          <span class="material-symbols-outlined">grid_view</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  @if (selectedIds().size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-count">{{ selectedIds().size }} seleccionados</span>
+      <div class="bulk-actions">
+        <button class="bulk-btn">
+          <span class="material-symbols-outlined">edit</span> Editar
+        </button>
+        <button class="bulk-btn">
+          <span class="material-symbols-outlined">content_copy</span> Duplicar
+        </button>
+        <button class="bulk-btn danger">
+          <span class="material-symbols-outlined">delete</span> Eliminar
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- TABLE VIEW -->
+  @if (currentView() === 'table') {
+    <div class="table-card">
+      <div class="table-wrapper">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th class="th-check">
+                <input
+                  type="checkbox"
+                  class="custom-check"
+                  [checked]="selectAll()"
+                  (change)="toggleSelectAll()"
+                />
+              </th>
+              <th class="th-product">Producto</th>
+              <th>SKU</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Ventas</th>
+              <th>Estado</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of filteredProducts; track product.id) {
+              <tr [class.selected]="isSelected(product.id)">
+                <td class="td-check">
+                  <input
+                    type="checkbox"
+                    class="custom-check"
+                    [checked]="isSelected(product.id)"
+                    (change)="toggleSelect(product.id)"
+                  />
+                </td>
+                <td class="td-product">
+                  <img [src]="product.image" [alt]="product.name" class="product-thumb" />
+                  <div class="product-info">
+                    <span class="product-name">{{ product.name }}</span>
+                    <span class="product-brand">{{ product.brand }}</span>
+                  </div>
+                </td>
+                <td class="td-sku">{{ product.sku }}</td>
+                <td>
+                  <span class="category-tag">{{ product.category }}</span>
+                </td>
+                <td class="td-price">
+                  <span class="current-price">{{ formatCOP(product.price) }}</span>
+                  @if (product.originalPrice) {
+                    <span class="original-price">{{ formatCOP(product.originalPrice) }}</span>
+                  }
+                </td>
+                <td>
+                  <span class="stock-badge" [class]="getStockClass(product.stock)">
+                    {{ product.stock }} uds
+                  </span>
+                </td>
+                <td class="td-sales">{{ product.sales }}</td>
+                <td>
+                  <span class="status-badge" [class]="getStatusClass(product.status)">
+                    {{ product.status | titlecase }}
+                  </span>
+                </td>
+                <td class="td-actions">
+                  <button class="action-btn" title="Editar">
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+                  <button class="action-btn" title="Duplicar">
+                    <span class="material-symbols-outlined">content_copy</span>
+                  </button>
+                  <button class="action-btn danger" title="Eliminar">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (filteredProducts.length === 0) {
+        <div class="empty-state">
+          <span class="material-symbols-outlined empty-icon">inventory_2</span>
+          <h3>No se encontraron productos</h3>
+          <p>Intenta ajustar los filtros o crea un nuevo producto</p>
+          <a routerLink="/admin/productos/nuevo" class="btn-primary">
+            <span class="material-symbols-outlined">add</span>
+            Nuevo Producto
+          </a>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- GRID VIEW -->
+  @if (currentView() === 'grid') {
+    <div class="products-grid">
+      @for (product of filteredProducts; track product.id) {
+        <div class="product-card" [class.selected]="isSelected(product.id)">
+          <div class="card-image-wrap">
+            <img [src]="product.image" [alt]="product.name" class="card-image" />
+            <div class="card-overlay">
+              <input
+                type="checkbox"
+                class="custom-check"
+                [checked]="isSelected(product.id)"
+                (change)="toggleSelect(product.id)"
+              />
+              <span class="status-badge" [class]="getStatusClass(product.status)">
+                {{ product.status | titlecase }}
+              </span>
+            </div>
+          </div>
+          <div class="card-body">
+            <span class="card-brand">{{ product.brand }}</span>
+            <h3 class="card-name">{{ product.name }}</h3>
+            <div class="card-meta">
+              <span class="card-price">{{ formatCOP(product.price) }}</span>
+              <span class="stock-badge" [class]="getStockClass(product.stock)">
+                {{ product.stock }} uds
+              </span>
+            </div>
+            <div class="card-footer">
+              <span class="card-sku">{{ product.sku }}</span>
+              <div class="card-actions">
+                <button class="action-btn" title="Editar">
+                  <span class="material-symbols-outlined">edit</span>
+                </button>
+                <button class="action-btn danger" title="Eliminar">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (filteredProducts.length === 0) {
+        <div class="empty-state grid-empty">
+          <span class="material-symbols-outlined empty-icon">inventory_2</span>
+          <h3>No se encontraron productos</h3>
+          <p>Intenta ajustar los filtros o crea un nuevo producto</p>
+        </div>
+      }
+    </div>
+  }
+</div>

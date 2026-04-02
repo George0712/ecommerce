@@ -181,14 +181,14 @@
         <!-- En móvil: toggle acordeón para los productos. Cerrado por defecto -->
         <details class="lg:hidden mb-4 group border-b border-zinc-100 pb-2">
            <summary class="flex justify-between items-center py-4 text-sm font-bold uppercase text-emerald-600 tracking-wider list-none [&::-webkit-details-marker]:hidden cursor-pointer">
-              Ver resumen del pedido ({{ cartItems().length }})
+              Ver resumen del pedido ({{ cartService.cartItems().length }})
               <span class="text-[#1d1d1d] ml-auto mr-4 tabular-nums">{{ formatCOP(cartTotal()) }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-open:rotate-180 text-zinc-500" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
            </summary>
            <div class="pb-6">
               <!-- Reutilizar layout de lista para movil -->
               <ul class="flex flex-col gap-4 max-h-[40vh] overflow-y-auto px-1 py-2 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-200">
-                @for (item of cartItems(); track item.id) {
+                @for (item of cartService.cartItems(); track item.id) {
                   <li class="flex items-center gap-4 text-sm">
                     <div class="relative h-16 w-16 bg-zinc-100 shrink-0 border border-zinc-200">
                       <img [src]="item.image" alt="" class="h-full w-full object-cover">
@@ -211,7 +211,7 @@
 
         <!-- Desktop list -->
         <ul class="hidden lg:flex flex-col gap-4 max-h-[50vh] overflow-y-auto px-1 py-2 mb-6 border-b border-zinc-200 pb-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-200">
-          @for (item of cartItems(); track item.id) {
+          @for (item of cartService.cartItems(); track item.id) {
             <li class="flex items-center gap-4 text-sm">
               <div class="relative h-[72px] w-[72px] bg-zinc-100 shrink-0 border border-zinc-200">
                 <img [src]="item.image" alt="" class="h-full w-full object-cover">
@@ -235,7 +235,7 @@
           <dl class="space-y-4 text-sm text-zinc-600 mb-6">
             <div class="flex items-center justify-between">
               <dt>Subtotal</dt>
-              <dd class="font-bold tabular-nums text-zinc-900">{{ formatCOP(cartSubtotal()) }}</dd>
+              <dd class="font-bold tabular-nums text-zinc-900">{{ formatCOP(cartService.cartSubtotal()) }}</dd>
             </div>
             <div class="flex items-center justify-between">
               <dt>Envío @if(selectedRegion()){ <span class="text-xs font-normal text-zinc-400 block -mt-1">hacia {{ selectedRegion() }}</span> }</dt>

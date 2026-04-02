@@ -1,7 +1,8 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductCard } from '../../shared/components/product-card/product-card';
+import { CartService } from '../../shared/services/cart.service';
 
 export interface ProductDetails {
   id: string;
@@ -164,11 +165,51 @@ export class DetailsProduct implements OnInit {
   ];
 
   recomendadosIndex = 0;
+  
+  cartService = inject(CartService);
+  router = inject(Router);
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute
   ) {}
+
+  addToCart() {
+    if (this.selectedSizeIndex === null && !this.isOneSize) {
+      alert("Por favor selecciona una talla"); // This could be improved with a nicer UI toast
+      return;
+    }
+
+    const sizeLabel = this.selectedSizeIndex !== null 
+      ? this.product.sizes[this.selectedSizeIndex].label 
+      : 'Única';
+      
+    const colorLabel = this.product.colors[this.selectedColorIndex].label;
+
+    this.cartService.addItem({
+      id: this.product.id,
+      name: this.product.name,
+      brand: this.product.brand,
+      price: this.product.price,
+      image: this.product.images[0],
+      color: colorLabel,
+      size: sizeLabel,
+      quantity: this.quantity
+    });
+  }
+
+  buyNow() {
+    this.addToCart();
+    
+    // Si la selección de talla falló y no se pudo añadir
+    if (this.selectedSizeIndex === null && !this.isOneSize) {
+      return;
+    }
+    
+    // Cerramos el carrito para que no estorbe (ya que addToCart lo abre por defecto)
+    this.cartService.isCartOpen.set(false);
+    this.router.navigate(['/checkout']);
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {

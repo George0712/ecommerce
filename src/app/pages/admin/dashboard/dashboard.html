@@ -1,0 +1,188 @@
+<div class="dashboard">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">{{ greeting }}, <span class="accent">Admin</span></h1>
+      <p class="page-subtitle">{{ currentDate }} — Resumen general de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar
+      </button>
+      <button class="btn-primary">
+        <span class="material-symbols-outlined">add</span>
+        Nuevo Producto
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-grid">
+    @for (card of kpiCards; track card.label) {
+      <div class="kpi-card" [attr.data-color]="card.color">
+        <div class="kpi-header">
+          <div class="kpi-icon-wrap" [attr.data-color]="card.color">
+            <span class="material-symbols-outlined">{{ card.icon }}</span>
+          </div>
+          <div class="kpi-change" [class.positive]="card.change > 0" [class.negative]="card.change < 0">
+            <span class="material-symbols-outlined change-arrow">
+              {{ card.change > 0 ? 'trending_up' : 'trending_down' }}
+            </span>
+            <span>{{ card.change > 0 ? '+' : '' }}{{ card.change }}%</span>
+          </div>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ card.value }}</span>
+          <span class="kpi-label">{{ card.label }}</span>
+        </div>
+        <span class="kpi-sublabel">{{ card.changeLabel }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Main Grid -->
+  <div class="main-grid">
+    <!-- Sales Chart -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Ventas de la semana</h2>
+          <p class="card-subtitle">Rendimiento de los últimos 7 días</p>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-dot"></span>
+          <span class="legend-label">Ventas diarias</span>
+        </div>
+      </div>
+      <div class="chart-container">
+        @for (bar of salesData; track bar.day) {
+          <div class="chart-bar-group">
+            <div class="chart-tooltip">{{ bar.amount }}</div>
+            <div class="chart-bar-track">
+              <div
+                class="chart-bar"
+                [style.height]="animatedBars ? bar.value + '%' : '0%'"
+              ></div>
+            </div>
+            <span class="chart-label">{{ bar.day }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="card orders-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Pedidos recientes</h2>
+          <p class="card-subtitle">Últimas transacciones</p>
+        </div>
+        <a class="card-link" href="#">Ver todos →</a>
+      </div>
+      <div class="orders-list">
+        @for (order of recentOrders; track order.id) {
+          <div class="order-row">
+            <div class="order-info">
+              <span class="order-id">{{ order.id }}</span>
+              <span class="order-customer">{{ order.customer }}</span>
+            </div>
+            <span class="order-product">{{ order.product }}</span>
+            <span class="order-amount">{{ order.amount }}</span>
+            <span class="order-status" [class]="getStatusClass(order.status)">
+              {{ getStatusLabel(order.status) }}
+            </span>
+            <span class="order-date">{{ order.date }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid -->
+  <div class="bottom-grid">
+    <!-- Top Products -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Productos más vendidos</h2>
+          <p class="card-subtitle">Top 5 del mes</p>
+        </div>
+      </div>
+      <div class="top-products-list">
+        @for (product of topProducts; track product.name; let i = $index) {
+          <div class="top-product-row">
+            <span class="product-rank">{{ i + 1 }}</span>
+            <img [src]="product.image" [alt]="product.name" class="product-thumb" />
+            <div class="product-info">
+              <span class="product-name">{{ product.name }}</span>
+              <span class="product-cat">{{ product.category }}</span>
+            </div>
+            <div class="product-stats">
+              <span class="product-sold">{{ product.sold }} uds</span>
+              <span class="product-revenue">{{ product.revenue }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Actividad reciente</h2>
+          <p class="card-subtitle">Últimas actualizaciones</p>
+        </div>
+      </div>
+      <div class="activity-feed">
+        @for (activity of activities; track activity.title) {
+          <div class="activity-item">
+            <div class="activity-icon" [attr.data-color]="activity.color">
+              <span class="material-symbols-outlined">{{ activity.icon }}</span>
+            </div>
+            <div class="activity-content">
+              <span class="activity-title">{{ activity.title }}</span>
+              <span class="activity-desc">{{ activity.description }}</span>
+            </div>
+            <span class="activity-time">{{ activity.time }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card quick-actions-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Acciones rápidas</h2>
+          <p class="card-subtitle">Tareas frecuentes</p>
+        </div>
+      </div>
+      <div class="quick-actions-grid">
+        @for (action of quickActions; track action.label) {
+          <button class="quick-action-btn" [attr.data-color]="action.color">
+            <span class="material-symbols-outlined">{{ action.icon }}</span>
+            <span>{{ action.label }}</span>
+          </button>
+        }
+      </div>
+
+      <!-- Mini Stats -->
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <span class="mini-stat-value">98.2%</span>
+          <span class="mini-stat-label">Uptime</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-value">1.2s</span>
+          <span class="mini-stat-label">Tiempo carga</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-stat-value">24</span>
+          <span class="mini-stat-label">Productos activos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

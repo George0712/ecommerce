@@ -1,0 +1,18 @@
+<div class="notification-container">
+  @for (toast of notificationService.notifications(); track toast.id) {
+    <div class="toast" [attr.data-type]="toast.type">
+      <div class="toast-icon">
+        <span class="material-symbols-outlined">{{ getIcon(toast.type) }}</span>
+      </div>
+      <div class="toast-content">
+        <span class="toast-title">{{ toast.title }}</span>
+        @if (toast.message) {
+          <span class="toast-message">{{ toast.message }}</span>
+        }
+      </div>
+      <button class="toast-close" (click)="close(toast.id)" aria-label="Cerrar notificación">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+</div>

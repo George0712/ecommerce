@@ -19,20 +19,6 @@
       
       <!-- ═══════════ Image Gallery ═══════════ -->
       <div class="details-gallery mb-10 lg:mb-0">
-        <!-- Mobile: horizontal scroll thumbnails on top -->
-        <div class="flex gap-3 overflow-x-auto pb-3 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          @for (img of product.images; track img; let i = $index) {
-            <button 
-              type="button" 
-              (click)="selectImage(i)"
-              class="relative flex-none w-20 h-20 aspect-square overflow-hidden bg-zinc-200 border-2 cursor-pointer transition-all duration-300 ease-out"
-              [ngClass]="selectedImageIndex === i ? 'border-[#1d1d1d] shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
-              [attr.aria-label]="'Ver imagen ' + (i + 1)"
-            >
-              <img [src]="img" class="absolute inset-0 w-full h-full object-cover object-center" alt="" loading="lazy">
-            </button>
-          }
-        </div>
 
         <!-- Desktop: side-by-side layout, thumbnails + main -->
         <div class="hidden lg:flex lg:gap-4" style="height: 560px;">
@@ -68,6 +54,21 @@
             [alt]="product.name" 
             class="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           >
+        </div>
+
+        <!-- Mobile: horizontal scroll thumbnails below -->
+        <div class="flex gap-3 overflow-x-auto mt-3 pb-1 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] snap-x snap-mandatory scroll-p-0">
+          @for (img of product.images; track img; let i = $index) {
+            <button 
+              type="button" 
+              (click)="selectImage(i)"
+              class="relative flex-none w-20 h-20 aspect-square overflow-hidden bg-zinc-200 border-2 cursor-pointer transition-all duration-300 ease-out snap-start"
+              [ngClass]="selectedImageIndex === i ? 'border-[#1d1d1d] shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
+              [attr.aria-label]="'Ver imagen ' + (i + 1)"
+            >
+              <img [src]="img" class="absolute inset-0 w-full h-full object-cover object-center" alt="" loading="lazy">
+            </button>
+          }
         </div>
       </div>
 
@@ -161,11 +162,11 @@
               &#43;
             </button>
           </div>
-          <button class="flex-1 w-full py-2 bg-white border-2 border-[#1d1d1d] text-[#1d1d1d] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#1d1d1d] hover:text-[#e2d2bb] hover:shadow-lg active:scale-[0.97] cursor-pointer">
+          <button (click)="addToCart()" class="flex-1 w-full py-2 bg-white border-2 border-[#1d1d1d] text-[#1d1d1d] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#1d1d1d] hover:text-[#e2d2bb] hover:shadow-lg active:scale-[0.97] cursor-pointer">
             Agregar al Carrito
           </button>
         </div>
-        <button class="w-full bg-[#1d1d1d] text-[#e2d2bb] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#0f0f0f] hover:shadow-xl active:scale-[0.97] mb-10 shadow-lg cursor-pointer">
+        <button (click)="buyNow()" class="w-full bg-[#1d1d1d] text-[#e2d2bb] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#0f0f0f] hover:shadow-xl active:scale-[0.97] mb-10 shadow-lg cursor-pointer">
           Comprar Ahora
         </button>
 

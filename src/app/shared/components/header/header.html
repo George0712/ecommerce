@@ -2,7 +2,7 @@
   <div
     class="bg-emerald-600 py-2 text-center text-xs font-medium tracking-wide text-zinc-50 sm:text-sm"
   >
-    <p>Envíos a <span class="underline decoration-white/80 underline-offset-2">toda Colombia</span> · Nike, adidas y más</p>
+    <p>Envíos a <span class="underline decoration-white/80 underline-offset-2">toda Colombia</span></p>
   </div>
 
   <nav
@@ -15,7 +15,7 @@
       <!-- Menú Móvil (Hamburguesa) -->
       <button
         type="button"
-        class="header-icon-btn lg:hidden! -ml-2"
+        class="header-icon-btn rounded-full lg:hidden! -ml-2"
         (click)="toggleMobile()"
         [attr.aria-expanded]="mobileOpen()"
         aria-controls="header-mobile-panel"
@@ -46,19 +46,19 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
           </a>
           <!-- Dropdown -->
-          <div class="absolute left-0 top-full w-80 invisible translate-y-3 opacity-0 flex-col rounded-xl border border-zinc-100 bg-white p-4 shadow-xl transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
+          <div class="absolute left-0 top-full w-80 invisible translate-y-3 opacity-0 flex-col rounded-none border border-zinc-100 bg-white p-4 shadow-xl transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <h4 class="mb-2 px-3 text-xs font-bold uppercase tracking-wider text-emerald-600">Por Categoría</h4>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Running</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Training</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Fútbol</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Lifestyle</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Running</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Training</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Fútbol</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Lifestyle</a>
               </div>
               <div>
                 <h4 class="mb-2 px-3 text-xs font-bold uppercase tracking-wider text-zinc-400">Destacados</h4>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Ver todo</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-sm text-emerald-600 font-medium hover:bg-emerald-50 transition-colors">Drops Temporada</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-zinc-600 hover:bg-zinc-50 hover:text-emerald-600 transition-colors">Ver todo</a>
+                <a href="#" class="block rounded-none px-3 py-2 text-sm text-emerald-600 font-medium hover:bg-emerald-50 transition-colors">Drops Temporada</a>
               </div>
             </div>
           </div>
@@ -69,11 +69,11 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform duration-300 group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
           </a>
           <!-- Dropdown -->
-          <div class="absolute left-0 top-full w-48 invisible translate-y-3 opacity-0 flex-col rounded-xl border border-zinc-100 bg-white p-2 shadow-xl transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
-            <a href="#" class="block rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Nike</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">adidas</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Puma</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Under Armour</a>
+          <div class="absolute left-0 top-full w-48 invisible translate-y-3 opacity-0 flex-col rounded-none border border-zinc-100 bg-white p-2 shadow-xl transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 z-50">
+            <a href="#" class="block rounded-none px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Nike</a>
+            <a href="#" class="block rounded-none px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">adidas</a>
+            <a href="#" class="block rounded-none px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Puma</a>
+            <a href="#" class="block rounded-none px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors">Under Armour</a>
           </div>
         </li>
         <li class="relative group">
@@ -88,7 +88,7 @@
         <!-- Buscador Expandible (Desktop/Tablet) -->
         <form class="hidden sm:block relative group" role="search" (submit)="$event.preventDefault()">
           <label class="sr-only" for="header-search-desktop">Buscar</label>
-          <span class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-emerald-500 transition-colors" aria-hidden="true">
+          <span class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-[#1d1d1d] transition-colors" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </span>
           <input
@@ -99,7 +99,7 @@
             [value]="searchQuery"
             (input)="onSearchInput($event)"
             placeholder="Buscar..."
-            class="header-search-input w-32 placeholder:text-zinc-400 focus:w-48 lg:w-40 lg:focus:w-56 rounded-full border border-zinc-200 bg-zinc-50/50 py-1.5 pl-9 pr-3 text-sm text-zinc-900 transition-all duration-300 ease-in-out focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-emerald-500/10"
+            class="header-search-input w-36 placeholder:text-zinc-400 focus:w-56 lg:w-44 lg:focus:w-64 rounded-none border border-zinc-300 bg-zinc-50/50 py-1.5 pl-9 pr-3 text-sm text-zinc-900 transition-all duration-300 ease-in-out focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d]"
           />
         </form>
 
@@ -109,16 +109,16 @@
         </a> -->
 
         <!-- Cuenta -->
-        <a href="#" class="header-icon-btn hidden! lg:inline-flex!" aria-label="Mi cuenta" title="Cuenta">
+        <a href="#" class="header-icon-btn rounded-full hidden! lg:inline-flex!" aria-label="Mi cuenta" title="Cuenta">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
         </a>
 
         <!-- Carrito -->
-        <a href="#" (click)="toggleCart($event)" class="header-icon-btn relative -mr-2 lg:mr-0 z-10" aria-label="Carrito" title="Carrito">
+        <a href="#" (click)="toggleCart($event)" class="header-icon-btn rounded-full relative -mr-2 lg:mr-0 z-10" aria-label="Carrito" title="Carrito">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-zinc-800" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
-          @if (cartCount() > 0) {
+          @if (cartService.cartCount() > 0) {
             <span class="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-emerald-500 px-1 text-[10px] font-bold text-white ring-2 ring-white">
-              {{ cartCount() }}
+              {{ cartService.cartCount() }}
             </span>
           }
         </a>
@@ -129,180 +129,9 @@
 
     <!-- Panel Móvil Desplegable -->
     @if (mobileOpen()) {
-      <div id="header-mobile-panel" class="absolute top-full left-0 right-0 border-b border-zinc-200 bg-white px-4 py-4 shadow-xl lg:hidden z-40 transform origin-top animate-fade-in-down">
-        <!-- Buscador Móvil Integrado -->
-        <div class="mb-5 sm:hidden">
-          <form class="relative" role="search" (submit)="$event.preventDefault()">
-            <label class="sr-only" for="header-search-mobile-panel">Buscar</label>
-            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </span>
-            <input
-              id="header-search-mobile-panel"
-              type="search"
-              name="q"
-              autocomplete="off"
-              [value]="searchQuery"
-              (input)="onSearchInput($event)"
-              placeholder="Buscar productos y marcas..."
-              class="w-full rounded-md border border-zinc-200 bg-zinc-50 py-2.5 pl-10 pr-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/25"
-            />
-          </form>
-        </div>
-
-        <ul class="flex flex-col gap-1">
-          <li>
-            <a routerLink="/" class="block rounded-md px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" (click)="closeMobile()">Inicio</a>
-          </li>
-          <li>
-            <details class="group">
-              <summary class="flex items-center justify-between rounded-md px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                Catálogo
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-open:rotate-180 text-zinc-500" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </summary>
-              <div class="px-5 pb-3">
-                <a routerLink="/catalogo" class="block py-2 text-sm font-bold text-emerald-600" (click)="closeMobile()">Ver todo</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Running</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Training</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Fútbol</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Lifestyle</a>
-              </div>
-            </details>
-          </li>
-          <li>
-            <details class="group">
-              <summary class="flex items-center justify-between rounded-md px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                Marcas
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-open:rotate-180 text-zinc-500" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </summary>
-              <div class="px-5 pb-3">
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Nike</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">adidas</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Puma</a>
-                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Under Armour</a>
-              </div>
-            </details>
-          </li>
-          <li>
-            <a routerLink="/ofertas" class="block rounded-md px-3 py-3 text-base font-semibold text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors" (click)="closeMobile()">Ofertas</a>
-          </li>
-        </ul>
-        <div class="mt-4 border-t border-zinc-100 pt-4 px-2">
-            <a href="#" class="flex items-center gap-3 py-2 text-sm font-semibold text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Mi cuenta
-            </a>
-            <!-- <a href="#" class="flex items-center gap-3 py-2 text-sm font-semibold text-zinc-600 hover:text-emerald-600 mt-2" (click)="closeMobile()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              Mis favoritos
-            </a> -->
-        </div>
-      </div>
+      <app-mobile-nav (close)="closeMobile()"></app-mobile-nav>
     }
   </nav>
 
-  <!-- Overlay de fondo para el Carrito Lateral -->
-  <div 
-    class="fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 transition-opacity duration-300 ease-in-out" 
-    [ngClass]="isCartOpen() ? 'opacity-100 visible' : 'opacity-0 invisible'"
-    (click)="closeCart()"
-    aria-hidden="true"
-  ></div>
-
-  <!-- Panel del Carrito Lateral -->
-  <div 
-    class="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-out flex flex-col"
-    [ngClass]="isCartOpen() ? 'translate-x-0' : 'translate-x-full'"
-    role="dialog" 
-    aria-modal="true" 
-    aria-label="Carrito de compras"
-  >
-    <!-- Header del Carrito -->
-    <div class="flex items-center justify-between px-6 py-5 border-b border-zinc-200">
-      <h2 class="text-lg font-bold uppercase tracking-wide text-zinc-900 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        Tu Carrito ({{ cartCount() }})
-      </h2>
-      <button 
-        (click)="closeCart()"
-        class="p-2 -mr-2 text-zinc-400 hover:text-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-900 rounded-full cursor-pointer"
-        aria-label="Cerrar carrito"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-
-    <!-- Lista de Productos -->
-    <div class="flex-1 overflow-y-auto px-6 py-6 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-200 [&::-webkit-scrollbar-track]:bg-transparent hover:[&::-webkit-scrollbar-thumb]:bg-zinc-300">
-      @if (cartItems().length === 0) {
-        <div class="h-full flex flex-col items-center justify-center text-center text-zinc-500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="mb-4 text-zinc-300"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          <p class="font-medium text-base mb-2 text-zinc-800">Tu carrito está vacío</p>
-          <p class="text-sm">Empieza a llenarlo con lo mejor del catálogo.</p>
-          <a routerLink="/catalogo" (click)="closeCart()" class="mt-6 inline-flex justify-center items-center px-6 py-2 border border-zinc-900 text-sm font-bold uppercase tracking-wider text-zinc-900 hover:bg-zinc-900 hover:text-[#e2d2bb] transition-colors cursor-pointer">
-            Ver catálogo
-          </a>
-        </div>
-      } @else {
-        <ul class="flex flex-col gap-6">
-          @for (item of cartItems(); track item.id) {
-            <li class="flex gap-4 group">
-              <!-- Imagen -->
-              <a [routerLink]="['/details-product', item.id]" (click)="closeCart()" class="block h-24 w-24 shrink-0 overflow-hidden bg-zinc-100 rounded-md border border-zinc-100 relative cursor-pointer">
-                <img [src]="item.image" [alt]="item.name" class="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                <button (click)="$event.preventDefault(); $event.stopPropagation(); removeItem(item.id)" class="absolute top-1 right-1 p-1 bg-white/80 backdrop-blur rounded-full text-zinc-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-sm" aria-label="Eliminar producto">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-                </button>
-              </a>
-              
-              <!-- Detalles -->
-              <div class="flex flex-1 flex-col justify-between">
-                <div>
-                  <div class="flex justify-between items-start gap-2">
-                    <h3 class="text-sm font-bold uppercase tracking-tight text-zinc-900 leading-tight">
-                      <a [routerLink]="['/details-product', item.id]" (click)="closeCart()" class="hover:text-emerald-600 transition-colors cursor-pointer">{{ item.name }}</a>
-                    </h3>
-                  </div>
-                  <p class="mt-1 text-xs text-zinc-500 capitalize">{{ item.color }} · Talla {{ item.size }}</p>
-                </div>
-                
-                <div class="flex flex-1 items-end justify-between text-sm">
-                  <!-- Control de cantidad estilizado -->
-                  <div class="flex items-center border border-zinc-200 h-8 rounded-sm">
-                    <button (click)="decreaseQuantity(item.id)" class="px-2.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium">&minus;</button>
-                    <span class="w-6 text-center text-xs font-bold text-zinc-900 select-none">{{ item.quantity }}</span>
-                    <button (click)="increaseQuantity(item.id)" class="px-2.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 transition-colors cursor-pointer font-medium">&#43;</button>
-                  </div>
-                  
-                  <p class="font-bold tabular-nums text-zinc-900">{{ formatCOP(item.price * item.quantity) }}</p>
-                </div>
-              </div>
-            </li>
-          }
-        </ul>
-      }
-    </div>
-
-    <!-- Footer del Carrito -->
-    @if (cartItems().length > 0) {
-      <div class="border-t border-zinc-200 px-6 py-6 bg-zinc-50">
-        <div class="flex justify-between text-base font-bold text-zinc-900 mb-6 uppercase tracking-wide">
-          <p>Subtotal</p>
-          <p class="tabular-nums">{{ formatCOP(cartSubtotal) }}</p>
-        </div>
-        
-        <div class="flex flex-col gap-3">
-          <a routerLink="/checkout" (click)="closeCart()" class="w-full flex items-center justify-center bg-[#1d1d1d] px-6 py-3.5 text-sm font-bold uppercase tracking-wider text-[#e2d2bb] transition-all hover:bg-[#0f0f0f] hover:shadow-lg active:scale-[0.98] cursor-pointer">
-            Pagar Ahora
-          </a>
-          <a routerLink="/carrito" (click)="closeCart()" class="w-full flex items-center justify-center bg-white border border-[#1d1d1d] px-6 py-3 text-sm font-bold uppercase tracking-wider text-[#1d1d1d] hover:bg-zinc-50 transition-colors cursor-pointer">
-            Ver carrito completo
-          </a>
-        </div>
-        <p class="mt-4 flex justify-center text-center text-xs text-zinc-500">
-           Impuestos y envío calculados en el checkout.
-        </p>
-      </div>
-    }
-  </div>
+  <app-cart-sidebar></app-cart-sidebar>
 </header>

@@ -1,0 +1,520 @@
+<div class="product-form-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/productos" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div class="header-text">
+        <h1 class="page-title">Nuevo Producto</h1>
+        <p class="page-subtitle">Completa la información para publicar un producto</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">visibility</span>
+        Vista previa
+      </button>
+      <button class="btn-secondary">
+        Guardar borrador
+      </button>
+      <button class="btn-primary">
+        <span class="material-symbols-outlined">check</span>
+        Publicar producto
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs-nav">
+    <button class="tab-btn" [class.active]="activeTab() === 'general'" (click)="setTab('general')">
+      <span class="material-symbols-outlined">info</span>
+      Información
+    </button>
+    <button class="tab-btn" [class.active]="activeTab() === 'media'" (click)="setTab('media')">
+      <span class="material-symbols-outlined">image</span>
+      Imágenes
+      @if (productImages().length > 0) {
+        <span class="tab-count">{{ productImages().length }}</span>
+      }
+    </button>
+    <button class="tab-btn" [class.active]="activeTab() === 'variants'" (click)="setTab('variants')">
+      <span class="material-symbols-outlined">palette</span>
+      Variantes
+      @if (selectedColorsCount > 0 || selectedSizesCount > 0) {
+        <span class="tab-count">{{ selectedColorsCount + selectedSizesCount }}</span>
+      }
+    </button>
+    <button class="tab-btn" [class.active]="activeTab() === 'seo'" (click)="setTab('seo')">
+      <span class="material-symbols-outlined">search</span>
+      SEO
+    </button>
+    <button class="tab-btn" [class.active]="activeTab() === 'shipping'" (click)="setTab('shipping')">
+      <span class="material-symbols-outlined">local_shipping</span>
+      Envío
+    </button>
+  </div>
+
+  <!-- GENERAL INFO TAB -->
+  @if (activeTab() === 'general') {
+    <div class="form-layout">
+      <div class="form-main">
+        <!-- Basic Info Card -->
+        <div class="form-card">
+          <h2 class="card-title">Información básica</h2>
+          <div class="form-group">
+            <label class="form-label" for="productName">Nombre del producto <span class="required">*</span></label>
+            <input
+              id="productName"
+              type="text"
+              class="form-input"
+              placeholder="Ej: Nike Air Zoom Pegasus 41"
+              [(ngModel)]="productName"
+              (ngModelChange)="onNameChange()"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="productDesc">Descripción</label>
+            <textarea
+              id="productDesc"
+              class="form-textarea"
+              placeholder="Describe las características principales del producto..."
+              rows="5"
+              [(ngModel)]="productDescription"
+            ></textarea>
+            <span class="form-hint">Usa una descripción clara que destaque los beneficios del producto</span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="productBrand">Marca <span class="required">*</span></label>
+              <select id="productBrand" class="form-select" [(ngModel)]="productBrand">
+                <option value="">Seleccionar marca</option>
+                @for (brand of brands; track brand) {
+                  <option [value]="brand">{{ brand }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productSku">SKU</label>
+              <input
+                id="productSku"
+                type="text"
+                class="form-input"
+                placeholder="Ej: NK-AZP41-001"
+                [(ngModel)]="productSku"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productBarcode">Código de barras</label>
+              <input
+                id="productBarcode"
+                type="text"
+                class="form-input"
+                placeholder="EAN / UPC"
+                [(ngModel)]="productBarcode"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Card -->
+        <div class="form-card">
+          <h2 class="card-title">Precios</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="productPrice">Precio de venta <span class="required">*</span></label>
+              <div class="input-prefix">
+                <span class="prefix">$</span>
+                <input
+                  id="productPrice"
+                  type="number"
+                  class="form-input with-prefix"
+                  placeholder="0"
+                  [(ngModel)]="productPrice"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productCompare">Precio comparación</label>
+              <div class="input-prefix">
+                <span class="prefix">$</span>
+                <input
+                  id="productCompare"
+                  type="number"
+                  class="form-input with-prefix"
+                  placeholder="0"
+                  [(ngModel)]="productComparePrice"
+                />
+              </div>
+              <span class="form-hint">Precio tachado original</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="productCost">Costo</label>
+              <div class="input-prefix">
+                <span class="prefix">$</span>
+                <input
+                  id="productCost"
+                  type="number"
+                  class="form-input with-prefix"
+                  placeholder="0"
+                  [(ngModel)]="productCost"
+                />
+              </div>
+            </div>
+          </div>
+          @if (productPrice && productCost) {
+            <div class="margin-preview">
+              <div class="margin-item">
+                <span class="margin-label">Margen de ganancia</span>
+                <span class="margin-value accent">{{ profitMargin }}</span>
+              </div>
+              <div class="margin-item">
+                <span class="margin-label">Ganancia por unidad</span>
+                <span class="margin-value">{{ profitAmount }}</span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Inventory Card -->
+        <div class="form-card">
+          <h2 class="card-title">Inventario</h2>
+          <div class="form-row two-cols">
+            <div class="form-group">
+              <label class="form-label" for="productStock">Cantidad en stock</label>
+              <input
+                id="productStock"
+                type="number"
+                class="form-input"
+                placeholder="0"
+                [(ngModel)]="productStock"
+              />
+            </div>
+            <div class="form-group toggle-group">
+              <div class="toggle-row">
+                <label class="toggle-label">
+                  <input type="checkbox" [(ngModel)]="trackInventory" />
+                  <span class="toggle-switch"></span>
+                  <span>Rastrear inventario</span>
+                </label>
+              </div>
+              <div class="toggle-row">
+                <label class="toggle-label">
+                  <input type="checkbox" [(ngModel)]="continueSellingOutOfStock" />
+                  <span class="toggle-switch"></span>
+                  <span>Seguir vendiendo sin stock</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="form-sidebar">
+        <!-- Status Card -->
+        <div class="form-card">
+          <h2 class="card-title">Estado</h2>
+          <div class="status-options">
+            <label class="status-option" [class.active]="productStatus === 'activo'">
+              <input type="radio" name="status" value="activo" [(ngModel)]="productStatus" />
+              <span class="status-dot active"></span>
+              <div>
+                <span class="status-name">Activo</span>
+                <span class="status-desc">Visible en la tienda</span>
+              </div>
+            </label>
+            <label class="status-option" [class.active]="productStatus === 'borrador'">
+              <input type="radio" name="status" value="borrador" [(ngModel)]="productStatus" />
+              <span class="status-dot draft"></span>
+              <div>
+                <span class="status-name">Borrador</span>
+                <span class="status-desc">Solo visible para admins</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Category Card -->
+        <div class="form-card">
+          <h2 class="card-title">Organización</h2>
+          <div class="form-group">
+            <label class="form-label" for="category">Categoría <span class="required">*</span></label>
+            <select id="category" class="form-select" [(ngModel)]="selectedCategory">
+              <option value="">Seleccionar</option>
+              @for (cat of categories; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+          @if (currentSubcategories.length > 0) {
+            <div class="form-group">
+              <label class="form-label" for="subcategory">Subcategoría</label>
+              <select id="subcategory" class="form-select" [(ngModel)]="selectedSubcategory">
+                <option value="">Seleccionar</option>
+                @for (sub of currentSubcategories; track sub) {
+                  <option [value]="sub">{{ sub }}</option>
+                }
+              </select>
+            </div>
+          }
+          <div class="form-group">
+            <label class="form-label" for="tags">Etiquetas</label>
+            <input
+              id="tags"
+              type="text"
+              class="form-input"
+              placeholder="deporte, running, nuevo..."
+              [(ngModel)]="productTags"
+            />
+            <span class="form-hint">Separa con comas</span>
+          </div>
+        </div>
+
+        <!-- Quick Preview -->
+        <div class="form-card preview-card">
+          <h2 class="card-title">Vista previa</h2>
+          <div class="preview-product">
+            @if (productImages().length > 0) {
+              <img [src]="productImages()[0]" class="preview-image" alt="Preview" />
+            } @else {
+              <div class="preview-placeholder">
+                <span class="material-symbols-outlined">image</span>
+              </div>
+            }
+            <div class="preview-info">
+              <span class="preview-brand">{{ productBrand || 'Marca' }}</span>
+              <span class="preview-name">{{ productName || 'Nombre del producto' }}</span>
+              <span class="preview-price">{{ productPrice ? ('$' + productPrice) : '$0' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- MEDIA TAB -->
+  @if (activeTab() === 'media') {
+    <div class="form-card full-width">
+      <h2 class="card-title">Imágenes del producto</h2>
+      <p class="card-desc">Agrega hasta 6 imágenes de alta calidad. La primera será la imagen principal.</p>
+
+      <div
+        class="upload-zone"
+        [class.drag-over]="dragOver()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave()"
+        (drop)="onDrop($event)"
+        (click)="addDemoImage()"
+      >
+        <span class="material-symbols-outlined upload-icon">cloud_upload</span>
+        <p class="upload-text">Arrastra y suelta imágenes aquí</p>
+        <p class="upload-hint">o haz clic para seleccionar — PNG, JPG, WebP (máx. 5MB c/u)</p>
+      </div>
+
+      @if (productImages().length > 0) {
+        <div class="images-grid">
+          @for (img of productImages(); track img; let i = $index) {
+            <div class="image-card" [class.main]="i === 0">
+              <img [src]="img" alt="Product image" />
+              @if (i === 0) {
+                <span class="main-badge">Principal</span>
+              }
+              <button class="remove-img-btn" (click)="removeImage(i)">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- VARIANTS TAB -->
+  @if (activeTab() === 'variants') {
+    <div class="form-layout">
+      <div class="form-main">
+        <div class="form-card">
+          <h2 class="card-title">Colores disponibles</h2>
+          <p class="card-desc">Selecciona los colores en los que el producto está disponible</p>
+          <div class="colors-grid">
+            @for (color of availableColors; track color.name) {
+              <button
+                class="color-option"
+                [class.selected]="color.selected"
+                (click)="toggleColor(color)"
+              >
+                <span class="color-swatch" [style.background]="color.hex"></span>
+                <span class="color-name">{{ color.name }}</span>
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h2 class="card-title">Tallas disponibles</h2>
+          <p class="card-desc">Selecciona las tallas en las que el producto está disponible</p>
+          <div class="sizes-grid">
+            @for (size of availableSizes; track size.label) {
+              <button
+                class="size-option"
+                [class.selected]="size.selected"
+                (click)="toggleSize(size)"
+              >
+                {{ size.label }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="form-sidebar">
+        <div class="form-card">
+          <h2 class="card-title">Resumen variantes</h2>
+          <div class="variant-summary">
+            <div class="summary-row">
+              <span class="summary-label">Colores</span>
+              <span class="summary-value">{{ selectedColorsCount }}</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">Tallas</span>
+              <span class="summary-value">{{ selectedSizesCount }}</span>
+            </div>
+            <div class="summary-row total">
+              <span class="summary-label">Total combinaciones</span>
+              <span class="summary-value accent">{{ (selectedColorsCount || 1) * (selectedSizesCount || 1) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- SEO TAB -->
+  @if (activeTab() === 'seo') {
+    <div class="form-card full-width">
+      <h2 class="card-title">Optimización para motores de búsqueda (SEO)</h2>
+      <p class="card-desc">Personaliza cómo aparece tu producto en los resultados de búsqueda de Google</p>
+
+      <div class="seo-preview">
+        <span class="seo-preview-url">tutienda.com/producto/{{ seoSlug || 'url-del-producto' }}</span>
+        <span class="seo-preview-title">{{ seoTitle || productName || 'Título del producto' }}</span>
+        <span class="seo-preview-desc">{{ seoDescription || 'Descripción del producto para motores de búsqueda...' }}</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="seoTitle">Título SEO</label>
+        <input
+          id="seoTitle"
+          type="text"
+          class="form-input"
+          placeholder="Ej: Nike Air Zoom Pegasus 41 — Comprar Online"
+          [(ngModel)]="seoTitle"
+        />
+        <span class="form-hint char-count" [class.over]="seoTitle.length > 60">
+          {{ seoTitle.length }}/60 caracteres
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="seoDesc">Meta descripción</label>
+        <textarea
+          id="seoDesc"
+          class="form-textarea"
+          placeholder="Una descripción concisa para los resultados de búsqueda..."
+          rows="3"
+          [(ngModel)]="seoDescription"
+        ></textarea>
+        <span class="form-hint char-count" [class.over]="seoDescription.length > 160">
+          {{ seoDescription.length }}/160 caracteres
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="seoSlug">URL Slug</label>
+        <div class="slug-field">
+          <span class="slug-prefix">/producto/</span>
+          <input
+            id="seoSlug"
+            type="text"
+            class="form-input slug-input"
+            placeholder="url-del-producto"
+            [(ngModel)]="seoSlug"
+          />
+        </div>
+        <button class="generate-slug-btn" (click)="generateSlug()">
+          <span class="material-symbols-outlined">auto_fix_high</span>
+          Generar desde nombre
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- SHIPPING TAB -->
+  @if (activeTab() === 'shipping') {
+    <div class="form-card full-width">
+      <h2 class="card-title">Información de envío</h2>
+      <p class="card-desc">Dimensiones y peso del producto para calcular costos de envío</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="weight">Peso</label>
+          <div class="input-suffix">
+            <input
+              id="weight"
+              type="number"
+              class="form-input with-suffix"
+              placeholder="0"
+              [(ngModel)]="productWeight"
+            />
+            <span class="suffix">kg</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="height">Alto</label>
+          <div class="input-suffix">
+            <input
+              id="height"
+              type="number"
+              class="form-input with-suffix"
+              placeholder="0"
+              [(ngModel)]="productHeight"
+            />
+            <span class="suffix">cm</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="width">Ancho</label>
+          <div class="input-suffix">
+            <input
+              id="width"
+              type="number"
+              class="form-input with-suffix"
+              placeholder="0"
+              [(ngModel)]="productWidth"
+            />
+            <span class="suffix">cm</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="length">Largo</label>
+          <div class="input-suffix">
+            <input
+              id="length"
+              type="number"
+              class="form-input with-suffix"
+              placeholder="0"
+              [(ngModel)]="productLength"
+            />
+            <span class="suffix">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="shipping-note">
+        <span class="material-symbols-outlined">info</span>
+        <p>Los costos de envío se calcularán automáticamente con base en estas dimensiones y la ubicación del comprador.</p>
+      </div>
+    </div>
+  }
+</div>

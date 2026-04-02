@@ -32,6 +32,6 @@
 
 body {
   font-family: 'Poppins', system-ui, sans-serif;
-  overflow-x: hidden; /* Evita que el contenido se vea desfasado hacia un lado en dispositivos */
+  overflow-x: clip; /* Evita que el contenido se vea desfasado hacia un lado en dispositivos, pero permite sticky */
   width: 100%;
 }

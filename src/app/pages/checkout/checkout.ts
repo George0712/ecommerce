@@ -1,7 +1,8 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CartService } from '../../shared/services/cart.service';
 
 const COSTO_LOCAL = 10000;
 const COSTO_NACIONAL = 15000;
@@ -14,42 +15,15 @@ const COSTO_EXTREMO = 25000;
   styleUrl: './checkout.css',
 })
 export class Checkout {
-  // Datos simulados del carrito (idealmente vendrían de un servicio)
-  readonly cartItems = signal([
-    {
-      id: 1,
-      name: 'Nike Air Max 270',
-      brand: 'Nike',
-      price: 650000,
-      image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      color: 'Rojo/Negro',
-      size: '42',
-      quantity: 1,
-    },
-    {
-      id: 2,
-      name: 'adidas Ultraboost 22',
-      brand: 'adidas',
-      price: 890000,
-      image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      color: 'Blanco',
-      size: '40',
-      quantity: 1,
-    }
-  ]);
+  public cartService = inject(CartService);
 
   // Selección del departamento
   selectedRegion = signal<string>('');
   selectedCity = signal<string>('');
 
-  // Lógica de cálculo
-  readonly cartSubtotal = computed(() => {
-    return this.cartItems().reduce((acc, item) => acc + item.price * item.quantity, 0);
-  });
-
   readonly shippingCost = computed(() => {
     // Si la compra es mayor a $1,000,000 envío gratis.
-    if (this.cartSubtotal() > 1000000) return 0;
+    if (this.cartService.cartSubtotal() > 1000000) return 0;
     
     const region = this.selectedRegion();
     if (!region) return 0; // Hasta que no seleccione, no se cobra o se pone 0, o un valor base. Aquí optamos por 0 y mostrar mensaje.
@@ -64,7 +38,7 @@ export class Checkout {
   });
 
   readonly cartTotal = computed(() => {
-    return this.cartSubtotal() + this.shippingCost();
+    return this.cartService.cartSubtotal() + this.shippingCost();
   });
 
   // Lista de Departamentos para el Select

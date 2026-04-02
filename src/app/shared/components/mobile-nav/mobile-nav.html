@@ -1,0 +1,65 @@
+      <div id="header-mobile-panel" class="absolute top-full left-0 right-0 border-b border-zinc-200 bg-white px-4 py-4 shadow-xl lg:hidden z-40 transform origin-top animate-fade-in-down">
+        <!-- Buscador Móvil Integrado -->
+        <div class="mb-5 sm:hidden">
+          <form class="relative" role="search" (submit)="$event.preventDefault()">
+            <label class="sr-only" for="header-search-mobile-panel">Buscar</label>
+            <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input
+              id="header-search-mobile-panel"
+              type="search"
+              name="q"
+              autocomplete="off"
+              [value]="searchQuery"
+              (input)="onSearchInput($event)"
+              placeholder="Buscar productos y marcas..."
+              class="w-full rounded-none border border-zinc-300 bg-zinc-50 py-2.5 pl-10 pr-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d]"
+            />
+          </form>
+        </div>
+
+        <ul class="flex flex-col gap-1">
+          <li>
+            <a routerLink="/" class="block px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" (click)="closeMobile()">Inicio</a>
+          </li>
+          <li>
+            <details class="group">
+              <summary class="flex items-center justify-between px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                Catálogo
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-open:rotate-180 text-zinc-500" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="px-5 pb-3">
+                <a routerLink="/catalogo" class="block py-2 text-sm font-bold text-emerald-600" (click)="closeMobile()">Ver todo</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Running</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Training</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Fútbol</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Lifestyle</a>
+              </div>
+            </details>
+          </li>
+          <li>
+            <details class="group">
+              <summary class="flex items-center justify-between rounded-none px-3 py-3 text-base font-semibold text-zinc-800 hover:bg-emerald-50 hover:text-emerald-700 transition-colors cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                Marcas
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="transition-transform duration-300 group-open:rotate-180 text-zinc-500" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </summary>
+              <div class="px-5 pb-3">
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Nike</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">adidas</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Puma</a>
+                <a routerLink="/catalogo" class="block py-2 text-sm text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">Under Armour</a>
+              </div>
+            </details>
+          </li>
+          <li>
+            <a routerLink="/ofertas" class="block rounded-none px-3 py-3 text-base font-semibold text-rose-500 hover:bg-rose-50 hover:text-rose-600 transition-colors" (click)="closeMobile()">Ofertas</a>
+          </li>
+        </ul>
+        <div class="mt-4 border-t border-zinc-100 pt-4 px-2">
+            <a href="#" class="flex items-center gap-3 py-2 text-sm font-semibold text-zinc-600 hover:text-emerald-600" (click)="closeMobile()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Mi cuenta
+            </a>
+        </div>
+      </div>
