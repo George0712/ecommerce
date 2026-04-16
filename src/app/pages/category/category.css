@@ -5,7 +5,7 @@
 
 :host {
   display: block;
-  font-family: 'Poppins', system-ui, sans-serif;
+  font-family: var(--app-font-body, 'Poppins', system-ui, sans-serif);
 }
 
 /* ── Page wrapper ── */
@@ -113,8 +113,8 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.3rem 0.65rem;
-  background: #1d1d1d;
-  color: #e2d2bb;
+  background: var(--color-zinc-900, #1d1d1d);
+  color: var(--color-emerald-300, #e2d2bb);
   font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -238,7 +238,7 @@
   left: 5px;
   width: 3px;
   height: 6px;
-  border: 1.5px solid #e2d2bb;
+  border: 1.5px solid var(--color-emerald-300, #e2d2bb);
   border-top: none;
   border-left: none;
   transform: rotate(45deg);
@@ -373,7 +373,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: #e2d2bb;
+  color: var(--color-emerald-300, #e2d2bb);
 }
 
 /* =============================================================
@@ -397,7 +397,7 @@
   gap: 0.45rem;
   padding: 0.55rem 1rem;
   background: #1d1d1d;
-  color: #e2d2bb;
+  color: var(--color-emerald-300, #e2d2bb);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -666,7 +666,7 @@
   width: 100%;
   padding: 0.9rem;
   background: #1d1d1d;
-  color: #e2d2bb;
+  color: var(--color-emerald-300, #e2d2bb);
   font-size: 0.8rem;
   font-weight: 800;
   text-transform: uppercase;

@@ -3,7 +3,7 @@
 }
 
 .home-page {
-  font-family: 'Poppins', system-ui, sans-serif;
+  font-family: var(--app-font-body, 'Poppins', system-ui, sans-serif);
 }
 
 /* Hero deportivo */
@@ -150,16 +150,16 @@
 }
 
 .home-btn-primary {
-  background: #1d1d1d;
-  color: #e2d2bb;
+  background: var(--color-zinc-900, #1d1d1d);
+  color: var(--color-emerald-300, #e2d2bb);
   border: 2px solid rgba(255, 255, 255, 0.25);
   letter-spacing: 0.12em;
 }
 
 .home-btn-primary:hover {
-  background: #e2d2bb;
-  color: #1d1d1d;
-  border-color: #e2d2bb;
+  background: var(--color-emerald-300, #e2d2bb);
+  color: var(--color-zinc-900, #1d1d1d);
+  border-color: var(--color-emerald-300, #e2d2bb);
   box-shadow: 0 8px 32px rgba(0,0,0,0.35);
 }
 

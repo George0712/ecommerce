@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CategoryService } from '../../../shared/services/category.service';
 
 export interface AdminProduct {
   id: number;
@@ -25,6 +26,8 @@ export interface AdminProduct {
   styleUrl: './product-list.css',
 })
 export class ProductList {
+  private categoryService = inject(CategoryService);
+
   searchQuery = '';
   selectedCategory = '';
   selectedStatus = '';
@@ -32,7 +35,9 @@ export class ProductList {
   selectedIds = signal<Set<number>>(new Set());
   currentView = signal<'grid' | 'table'>('table');
 
-  readonly categories = ['Calzado', 'Camisetas', 'Shorts', 'Leggings', 'Sudaderas', 'Accesorios'];
+  get categories(): string[] {
+    return this.categoryService.getCategoryNames();
+  }
   readonly statuses = ['activo', 'borrador', 'agotado'];
 
   readonly products: AdminProduct[] = [

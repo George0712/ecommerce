@@ -1,6 +1,7 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 import { CartSidebarComponent } from '../cart-sidebar/cart-sidebar';
 import { MobileNavComponent } from '../mobile-nav/mobile-nav';
 
@@ -12,8 +13,10 @@ import { MobileNavComponent } from '../mobile-nav/mobile-nav';
 })
 export class Header {
   public cartService = inject(CartService);
+  public authService = inject(AuthService);
 
   readonly mobileOpen = signal(false);
+  profileMenuOpen = signal(false);
 
   searchQuery = '';
 
@@ -35,5 +38,22 @@ export class Header {
     if (event) event.preventDefault();
     this.cartService.toggleCart();
     if (this.cartService.isCartOpen()) this.mobileOpen.set(false);
+  }
+
+  handleAccountClick(event: Event) {
+    event.preventDefault();
+    const user = this.authService.currentUser();
+    if (user) {
+      // Toggle profile menu
+      this.profileMenuOpen.set(!this.profileMenuOpen());
+    } else {
+      // Open login modal
+      this.authService.openModal();
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    this.profileMenuOpen.set(false);
   }
 }

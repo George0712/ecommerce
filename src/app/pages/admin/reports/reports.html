@@ -1,0 +1,260 @@
+<div class="reports-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Reportes</h1>
+      <p class="page-subtitle">Análisis y métricas de rendimiento de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <select class="period-select" [(ngModel)]="selectedPeriod">
+        @for (period of periods; track period.value) {
+          <option [value]="period.value">{{ period.label }}</option>
+        }
+      </select>
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar PDF
+      </button>
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">table_chart</span>
+        Exportar Excel
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-grid">
+    @for (kpi of kpis; track kpi.label) {
+      <div class="kpi-card" [attr.data-color]="kpi.color">
+        <div class="kpi-header">
+          <div class="kpi-icon-wrap" [attr.data-color]="kpi.color">
+            <span class="material-symbols-outlined">{{ kpi.icon }}</span>
+          </div>
+          <div class="kpi-change" [class.positive]="kpi.change > 0" [class.negative]="kpi.change < 0">
+            <span class="material-symbols-outlined change-arrow">
+              {{ kpi.change > 0 ? 'trending_up' : 'trending_down' }}
+            </span>
+            <span>{{ kpi.change > 0 ? '+' : '' }}{{ kpi.change }}%</span>
+          </div>
+        </div>
+        <div class="kpi-body">
+          <span class="kpi-value">{{ kpi.value }}</span>
+          <span class="kpi-label">{{ kpi.label }}</span>
+        </div>
+        <span class="kpi-sublabel">{{ kpi.changeLabel }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Revenue Chart + Orders Chart -->
+  <div class="charts-grid">
+    <!-- Monthly Revenue -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Ingresos Mensuales</h2>
+          <p class="card-subtitle">Evolución de ventas por mes</p>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-dot" data-color="accent"></span>
+          <span class="legend-label">Ingresos</span>
+        </div>
+      </div>
+      <div class="chart-container">
+        @for (bar of monthlyRevenue; track bar.label) {
+          <div class="chart-bar-group">
+            <div class="chart-tooltip">{{ bar.amount }}</div>
+            <div class="chart-bar-track">
+              <div
+                class="chart-bar"
+                [style.height]="animatedBars ? bar.value + '%' : '0%'"
+              ></div>
+            </div>
+            <span class="chart-label">{{ bar.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Weekly Orders -->
+    <div class="card chart-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Pedidos por Día</h2>
+          <p class="card-subtitle">Distribución semanal de pedidos</p>
+        </div>
+        <div class="chart-legend">
+          <span class="legend-dot" data-color="blue"></span>
+          <span class="legend-label">Pedidos</span>
+        </div>
+      </div>
+      <div class="chart-container orders-chart">
+        @for (bar of weeklyOrders; track bar.label) {
+          <div class="chart-bar-group">
+            <div class="chart-tooltip orders-tooltip">{{ bar.amount }} pedidos</div>
+            <div class="chart-bar-track">
+              <div
+                class="chart-bar bar-blue"
+                [style.height]="animatedBars ? bar.value + '%' : '0%'"
+              ></div>
+            </div>
+            <span class="chart-label">{{ bar.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Category Sales + Top Cities -->
+  <div class="mid-grid">
+    <!-- Category Sales Breakdown -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Ventas por Categoría</h2>
+          <p class="card-subtitle">Distribución de ingresos por categoría</p>
+        </div>
+      </div>
+      <div class="category-sales-list">
+        @for (cat of categorySales; track cat.name) {
+          <div class="category-sale-row">
+            <div class="cat-icon-wrap" [attr.data-color]="cat.color">
+              <span class="material-symbols-outlined">{{ cat.icon }}</span>
+            </div>
+            <div class="cat-info">
+              <span class="cat-name">{{ cat.name }}</span>
+              <span class="cat-orders">{{ cat.orders }} pedidos</span>
+            </div>
+            <div class="cat-bar-area">
+              <div class="cat-progress-track">
+                <div
+                  class="cat-progress-bar"
+                  [attr.data-color]="cat.color"
+                  [style.width]="animatedHBars ? cat.percentage + '%' : '0%'"
+                ></div>
+              </div>
+            </div>
+            <div class="cat-stats">
+              <span class="cat-revenue">{{ cat.revenue }}</span>
+              <span class="cat-percent">{{ cat.percentage }}%</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Top Cities -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Top Ciudades</h2>
+          <p class="card-subtitle">Ventas por ubicación geográfica</p>
+        </div>
+      </div>
+      <div class="cities-list">
+        @for (city of topCities; track city.city; let i = $index) {
+          <div class="city-row">
+            <span class="city-rank">{{ i + 1 }}</span>
+            <div class="city-info">
+              <span class="city-name">{{ city.city }}</span>
+              <div class="city-progress-track">
+                <div
+                  class="city-progress-bar"
+                  [style.width]="animatedHBars ? city.percentage + '%' : '0%'"
+                ></div>
+              </div>
+            </div>
+            <div class="city-stats">
+              <span class="city-revenue">{{ city.revenue }}</span>
+              <span class="city-orders">{{ city.orders }} pedidos</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Grid: Payment Methods + Hourly Traffic + Performance -->
+  <div class="bottom-grid">
+    <!-- Payment Methods -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Métodos de Pago</h2>
+          <p class="card-subtitle">Preferencias de pago de los clientes</p>
+        </div>
+      </div>
+      <div class="payment-list">
+        @for (pm of paymentMethods; track pm.method) {
+          <div class="payment-row">
+            <div class="payment-icon" [attr.data-color]="pm.color">
+              <span class="material-symbols-outlined">{{ pm.icon }}</span>
+            </div>
+            <div class="payment-info">
+              <span class="payment-name">{{ pm.method }}</span>
+              <div class="payment-bar-track">
+                <div
+                  class="payment-bar"
+                  [attr.data-color]="pm.color"
+                  [style.width]="animatedHBars ? pm.percentage + '%' : '0%'"
+                ></div>
+              </div>
+            </div>
+            <div class="payment-stats">
+              <span class="payment-count">{{ pm.count }}</span>
+              <span class="payment-percent">{{ pm.percentage }}%</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Hourly Traffic Heat Map -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Tráfico por Hora</h2>
+          <p class="card-subtitle">Actividad de usuarios durante el día</p>
+        </div>
+      </div>
+      <div class="heatmap-grid">
+        @for (slot of hourlyTraffic; track slot.hour) {
+          <div class="heatmap-cell" [class]="getTrafficClass(slot.value)" [title]="slot.hour + ': ' + slot.value + '% actividad'">
+            <span class="heatmap-value">{{ slot.value }}</span>
+            <span class="heatmap-hour">{{ slot.hour }}</span>
+          </div>
+        }
+      </div>
+      <div class="heatmap-legend">
+        <span class="heatmap-legend-label">Bajo</span>
+        <div class="heatmap-legend-bar"></div>
+        <span class="heatmap-legend-label">Alto</span>
+      </div>
+    </div>
+
+    <!-- Performance Metrics -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Métricas de Rendimiento</h2>
+          <p class="card-subtitle">Indicadores clave del negocio</p>
+        </div>
+      </div>
+      <div class="perf-grid">
+        @for (metric of performanceMetrics; track metric.label) {
+          <div class="perf-card" [attr.data-color]="metric.color">
+            <span class="material-symbols-outlined perf-icon">{{ metric.icon }}</span>
+            <span class="perf-value">{{ metric.value }}</span>
+            <span class="perf-label">{{ metric.label }}</span>
+            <div class="perf-change" [class.positive]="metric.change > 0" [class.negative]="metric.change < 0">
+              <span class="material-symbols-outlined">
+                {{ metric.change > 0 ? 'arrow_upward' : 'arrow_downward' }}
+              </span>
+              {{ metric.change > 0 ? '+' : '' }}{{ metric.change }}%
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

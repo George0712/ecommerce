@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CategoryService } from '../../../shared/services/category.service';
 
 interface ProductColor {
   name: string;
@@ -21,6 +22,7 @@ interface ProductSize {
   styleUrl: './product-form.css',
 })
 export class ProductForm {
+  private categoryService = inject(CategoryService);
   // Basic Info
   productName = '';
   productDescription = '';
@@ -69,14 +71,9 @@ export class ProductForm {
     { label: 'XXL', selected: false },
   ];
 
-  readonly categories = [
-    'Calzado',
-    'Camisetas',
-    'Shorts',
-    'Leggings',
-    'Sudaderas',
-    'Accesorios',
-  ];
+  get categories(): string[] {
+    return this.categoryService.getCategoryNames();
+  }
 
   readonly subcategories: Record<string, string[]> = {
     Calzado: ['Running', 'Training', 'Casual', 'Fútbol'],

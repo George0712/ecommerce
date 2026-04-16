@@ -1,0 +1,238 @@
+<div class="category-form-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/categorias" class="back-link">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </a>
+      <div class="header-text">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+        <p class="page-subtitle">{{ pageSubtitle }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline" routerLink="/admin/categorias">
+        <span class="material-symbols-outlined">close</span>
+        Cancelar
+      </button>
+      <button class="btn-secondary" (click)="saveDraft()">
+        Guardar inactiva
+      </button>
+      <button class="btn-primary" (click)="saveCategory()" [disabled]="!categoryName.trim()">
+        <span class="material-symbols-outlined">check</span>
+        {{ isEditing ? 'Guardar cambios' : 'Crear Categoría' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Layout -->
+  <div class="form-layout">
+    <div class="form-main">
+      <!-- Basic Info Card -->
+      <div class="form-card">
+        <h2 class="card-title">Información básica</h2>
+        <div class="form-group">
+          <label class="form-label" for="categoryName">Nombre de la categoría <span class="required">*</span></label>
+          <input
+            id="categoryName"
+            type="text"
+            class="form-input"
+            placeholder="Ej: Calzado deportivo"
+            [(ngModel)]="categoryName"
+            (ngModelChange)="onNameChange()"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="categorySlug">URL Slug</label>
+          <div class="slug-field">
+            <span class="slug-prefix">/categoria/</span>
+            <input
+              id="categorySlug"
+              type="text"
+              class="form-input slug-input"
+              placeholder="calzado-deportivo"
+              [(ngModel)]="categorySlug"
+            />
+          </div>
+          <button class="generate-slug-btn" (click)="generateSlug()">
+            <span class="material-symbols-outlined">auto_fix_high</span>
+            Generar desde nombre
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="categoryDesc">Descripción</label>
+          <textarea
+            id="categoryDesc"
+            class="form-textarea"
+            placeholder="Describe qué productos incluye esta categoría..."
+            rows="4"
+            [(ngModel)]="categoryDescription"
+          ></textarea>
+          <span class="form-hint">Una buena descripción ayuda al SEO y guía a tus clientes</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="categoryOrder">Orden de visualización</label>
+          <input
+            id="categoryOrder"
+            type="number"
+            class="form-input order-input"
+            placeholder="1"
+            [(ngModel)]="categoryOrder"
+          />
+          <span class="form-hint">Define en qué posición aparece esta categoría en la tienda</span>
+        </div>
+      </div>
+
+      <!-- Image Card -->
+      <div class="form-card">
+        <h2 class="card-title">Imagen de la categoría</h2>
+        <p class="card-desc">Sube una imagen representativa para esta categoría. Se mostrará en la tienda.</p>
+
+        @if (categoryImage()) {
+          <div class="image-preview-wrap">
+            <img [src]="categoryImage()" alt="Vista previa" class="image-preview" />
+            <div class="image-preview-overlay">
+              <button class="remove-img-btn" (click)="removeImage()">
+                <span class="material-symbols-outlined">delete</span>
+                Eliminar imagen
+              </button>
+            </div>
+          </div>
+        } @else {
+          <div
+            class="upload-zone"
+            [class.drag-over]="dragOver()"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave()"
+            (drop)="onDrop($event)"
+            (click)="fileInput.click()"
+          >
+            <span class="material-symbols-outlined upload-icon">cloud_upload</span>
+            <p class="upload-text">Arrastra y suelta una imagen aquí</p>
+            <p class="upload-hint">o haz clic para seleccionar — PNG, JPG, WebP (máx. 5MB)</p>
+          </div>
+          <input
+            #fileInput
+            type="file"
+            accept="image/*"
+            class="file-input-hidden"
+            (change)="onFileSelect($event)"
+          />
+          <button class="demo-image-btn" (click)="addDemoImage()">
+            <span class="material-symbols-outlined">photo_library</span>
+            Usar imagen de demostración
+          </button>
+        }
+      </div>
+
+      <!-- SEO Card -->
+      <div class="form-card">
+        <h2 class="card-title">SEO</h2>
+        <p class="card-desc">Personaliza cómo aparece esta categoría en los motores de búsqueda</p>
+
+        <div class="seo-preview">
+          <span class="seo-preview-url">tutienda.com/categoria/{{ categorySlug || 'url-de-la-categoria' }}</span>
+          <span class="seo-preview-title">{{ seoTitle || categoryName || 'Título de la categoría' }}</span>
+          <span class="seo-preview-desc">{{ seoDescription || categoryDescription || 'Descripción de la categoría para motores de búsqueda...' }}</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="seoTitle">Título SEO</label>
+          <input
+            id="seoTitle"
+            type="text"
+            class="form-input"
+            placeholder="Ej: Calzado Deportivo — Tu Tienda Online"
+            [(ngModel)]="seoTitle"
+          />
+          <span class="form-hint char-count" [class.over]="seoTitle.length > 60">
+            {{ seoTitle.length }}/60 caracteres
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="seoDesc">Meta descripción</label>
+          <textarea
+            id="seoDesc"
+            class="form-textarea"
+            placeholder="Una descripción concisa para los resultados de búsqueda..."
+            rows="3"
+            [(ngModel)]="seoDescription"
+          ></textarea>
+          <span class="form-hint char-count" [class.over]="seoDescription.length > 160">
+            {{ seoDescription.length }}/160 caracteres
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="form-sidebar">
+      <!-- Status Card -->
+      <div class="form-card">
+        <h2 class="card-title">Estado</h2>
+        <div class="status-options">
+          <label class="status-option" [class.active]="categoryStatus === 'activa'">
+            <input type="radio" name="status" value="activa" [(ngModel)]="categoryStatus" />
+            <span class="status-dot active"></span>
+            <div>
+              <span class="status-name">Activa</span>
+              <span class="status-desc">Visible en la tienda</span>
+            </div>
+          </label>
+          <label class="status-option" [class.active]="categoryStatus === 'inactiva'">
+            <input type="radio" name="status" value="inactiva" [(ngModel)]="categoryStatus" />
+            <span class="status-dot inactive"></span>
+            <div>
+              <span class="status-name">Inactiva</span>
+              <span class="status-desc">Oculta para los clientes</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Icon Card -->
+      <div class="form-card">
+        <h2 class="card-title">Icono</h2>
+        <p class="card-desc">Selecciona un icono representativo</p>
+        <div class="icon-grid">
+          @for (icon of iconOptions; track icon) {
+            <button
+              class="icon-option"
+              [class.selected]="categoryIcon === icon"
+              (click)="categoryIcon = icon"
+              [title]="icon"
+            >
+              <span class="material-symbols-outlined">{{ icon }}</span>
+            </button>
+          }
+        </div>
+        @if (categoryIcon) {
+          <div class="selected-icon-preview">
+            <span class="material-symbols-outlined">{{ categoryIcon }}</span>
+            <span class="selected-icon-name">{{ categoryIcon }}</span>
+          </div>
+        }
+      </div>
+
+      <!-- Preview Card -->
+      <div class="form-card preview-card">
+        <h2 class="card-title">Vista previa</h2>
+        <div class="preview-category">
+          @if (categoryImage()) {
+            <img [src]="categoryImage()" class="preview-image" alt="Preview" />
+          } @else {
+            <div class="preview-placeholder">
+              <span class="material-symbols-outlined">{{ categoryIcon || 'category' }}</span>
+            </div>
+          }
+          <div class="preview-info">
+            <span class="preview-icon material-symbols-outlined">{{ categoryIcon || 'category' }}</span>
+            <span class="preview-name">{{ categoryName || 'Nombre de la categoría' }}</span>
+            <span class="preview-slug">/{{ categorySlug || 'slug' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

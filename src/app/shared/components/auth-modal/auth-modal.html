@@ -1,0 +1,145 @@
+@if (isOpen) {
+  <div 
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 auth-overlay transition-opacity duration-300"
+    (click)="close()"
+    aria-labelledby="modal-title" 
+    role="dialog" 
+    aria-modal="true"
+  >
+    <!-- Modal Container -->
+    <div 
+      class="relative w-full max-w-sm rounded-[1rem] bg-white p-6 shadow-2xl auth-content transition-all duration-300"
+      (click)="stopPropagation($event)"
+    >
+      <!-- Close Button -->
+      <button 
+        type="button" 
+        (click)="close()" 
+        class="absolute right-4 top-4 text-zinc-400 hover:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-full p-1 transition-colors"
+        aria-label="Cerrar modal"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+  
+      <div class="text-center mb-6">
+        <h2 id="modal-title" class="text-2xl font-black uppercase tracking-tight text-zinc-900">
+          Sprint<span class="text-emerald-600">CO</span>
+        </h2>
+        <p class="mt-1 text-sm text-zinc-500">
+          {{ view() === 'login' ? 'Bienvenido de nuevo' : 'Crea tu cuenta' }}
+        </p>
+      </div>
+  
+      <!-- Global Error msg -->
+      @if (errorMsg()) {
+        <div class="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-600">
+          {{ errorMsg() }}
+        </div>
+      }
+  
+      <!-- LOGIN VIEW -->
+      @if (view() === 'login') {
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="space-y-4">
+          <div>
+            <label for="login-email" class="sr-only">Correo Electrónico</label>
+            <input 
+              id="login-email" 
+              type="email" 
+              formControlName="email" 
+              placeholder="Correo electrónico"
+              class="w-full rounded-md border border-zinc-300 bg-zinc-50/50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d] transition-colors"
+            />
+            @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+              <p class="mt-1 text-xs text-red-500">Un correo válido es requerido.</p>
+            }
+          </div>
+  
+          <div>
+            <label for="login-password" class="sr-only">Contraseña</label>
+            <input 
+              id="login-password" 
+              type="password" 
+              formControlName="password" 
+              placeholder="Contraseña"
+              class="w-full rounded-md border border-zinc-300 bg-zinc-50/50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d] transition-colors"
+            />
+          </div>
+  
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center text-zinc-600">
+              <input type="checkbox" class="mr-2 rounded border-zinc-300 text-[#1d1d1d] focus:ring-[#1d1d1d]">
+              Recordarme
+            </label>
+            <a href="#" class="font-medium text-emerald-600 hover:text-emerald-500">¿Olvidaste tu contraseña?</a>
+          </div>
+  
+          <button 
+            type="submit" 
+            class="w-full rounded-md bg-[#1d1d1d] py-2.5 text-sm font-semibold tracking-wide text-white hover:bg-black transition-colors"
+          >
+            Iniciar Sesión
+          </button>
+        </form>
+      }
+  
+      <!-- REGISTER VIEW -->
+      @if (view() === 'register') {
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()" class="space-y-4">
+          <div>
+            <label for="reg-name" class="sr-only">Nombre Completo</label>
+            <input 
+              id="reg-name" 
+              type="text" 
+              formControlName="name" 
+              placeholder="Nombre Completo"
+              class="w-full rounded-md border border-zinc-300 bg-zinc-50/50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d] transition-colors"
+            />
+            @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+              <p class="mt-1 text-xs text-red-500">Mínimo requerido.</p>
+            }
+          </div>
+  
+          <div>
+            <label for="reg-email" class="sr-only">Correo Electrónico</label>
+            <input 
+              id="reg-email" 
+              type="email" 
+              formControlName="email" 
+              placeholder="Correo electrónico"
+              class="w-full rounded-md border border-zinc-300 bg-zinc-50/50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d] transition-colors"
+            />
+          </div>
+  
+          <div>
+            <label for="reg-password" class="sr-only">Contraseña</label>
+            <input 
+              id="reg-password" 
+              type="password" 
+              formControlName="password" 
+              placeholder="Contraseña"
+              class="w-full rounded-md border border-zinc-300 bg-zinc-50/50 px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-[#1d1d1d] focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#1d1d1d] transition-colors"
+            />
+          </div>
+  
+          <button 
+            type="submit" 
+            class="w-full rounded-md bg-[#1d1d1d] py-2.5 text-sm font-semibold tracking-wide text-white hover:bg-black transition-colors"
+          >
+            Registrarse
+          </button>
+        </form>
+      }
+  
+      <!-- Toggle Links -->
+      <div class="mt-6 text-center text-sm text-zinc-600">
+        @if (view() === 'login') {
+          ¿No tienes una cuenta? 
+          <button (click)="toggleView()" class="font-bold text-emerald-600 hover:text-emerald-500">Crea una aquí</button>
+        } @else {
+          ¿Ya tienes cuenta? 
+          <button (click)="toggleView()" class="font-bold text-emerald-600 hover:text-emerald-500">Inicia Sesión</button>
+        }
+      </div>
+    </div>
+  </div>
+}

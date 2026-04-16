@@ -4,6 +4,7 @@ import { DetailsProduct } from './pages/details-product/details-product';
 import { Category } from './pages/category/category';
 import { Cart } from './pages/cart/cart';
 import { Checkout } from './pages/checkout/checkout';
+import { adminGuard } from './shared/guards/admin.guard';
 
 export const routes: Routes = [
     {
@@ -35,7 +36,12 @@ export const routes: Routes = [
         component: Checkout,
     },
     {
+        path: 'info/:slug',
+        loadComponent: () => import('./pages/information/information').then(m => m.Information),
+    },
+    {
         path: 'admin',
+        canActivate: [adminGuard],
         loadChildren: () =>
             import('./pages/admin/admin.routes').then(m => m.adminRoutes),
     },

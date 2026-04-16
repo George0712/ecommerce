@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 
-@theme {
+@theme  {
   /* Elegant beige/sand pastel (#e2d2bb) overriding emerald */
   --color-emerald-50: #fcfbf9;
   --color-emerald-100: #f6f3ed;
@@ -31,7 +31,235 @@
 }
 
 body {
-  font-family: 'Poppins', system-ui, sans-serif;
-  overflow-x: clip; /* Evita que el contenido se vea desfasado hacia un lado en dispositivos, pero permite sticky */
+  font-family: var(--app-font-body, 'Poppins', system-ui, sans-serif);
+  overflow-x: clip;
   width: 100%;
+}
+
+/* Ensure all buttons and links use the pointer cursor */
+button, 
+a, 
+[role="button"], 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"] {
+  cursor: pointer;
+}
+
+/* ============================================================
+   APPEARANCE SERVICE — Global CSS Variable Consumers
+   These rules react to changes made in /admin/configuracion
+   ============================================================ */
+
+/* --- Base Font Size --- */
+html {
+  font-size: var(--app-font-size, 16px);
+}
+
+/* --- Heading Font Family --- */
+h1, h2, h3, h4, h5, h6,
+.home-section-title,
+.cat-banner-title,
+.home-gender-label,
+.home-cat-label {
+  font-family: var(--app-font-heading, var(--app-font-body, 'Poppins', system-ui, sans-serif));
+}
+
+/* --- Border Radius — storefront elements --- */
+/* Product cards */
+.cat-product-card,
+.cat-card-media {
+  border-radius: var(--app-border-radius, 0px);
+  overflow: hidden;
+}
+
+/* Buttons — storefront */
+.home-btn-primary,
+.cat-mobile-filter-btn,
+.cat-apply-btn,
+.cat-card-quick-view,
+.cat-card-badge,
+.home-cta-banner button[type="submit"] {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+/* Form inputs — storefront */
+.cat-sort-select,
+.cat-checkbox,
+.home-cta-banner input[type="email"] {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+/* Chips & badges */
+.cat-chip {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+/* Image containers */
+.home-gender-tile,
+.home-gender-media {
+  border-radius: var(--app-border-radius, 0px);
+  overflow: hidden;
+}
+
+/* --- Container Width --- */
+.home-page .mx-auto.max-w-7xl,
+.home-page .mx-auto[class*="max-w-"] {
+  max-width: var(--app-container-width, 1440px);
+}
+
+/* --- Product Grid Columns --- */
+@media (min-width: 1024px) {
+  .cat-grid {
+    grid-template-columns: repeat(var(--app-product-columns, 4), minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .cat-grid {
+    grid-template-columns: repeat(min(var(--app-product-columns, 3), 3), minmax(0, 1fr)) !important;
+  }
+}
+
+/* Home page product grid — desktop */
+@media (min-width: 1024px) {
+  .home-page .sm\:grid.lg\:grid-cols-4 {
+    grid-template-columns: repeat(var(--app-product-columns, 4), minmax(0, 1fr)) !important;
+  }
+}
+
+/* --- Button Style Variations --- */
+/* Solid (default) — no changes needed */
+
+/* Outline style */
+html[data-button-style="outline"] .home-btn-primary {
+  background: transparent !important;
+  color: var(--color-emerald-300, #e2d2bb) !important;
+  border: 2px solid var(--color-emerald-300, #e2d2bb) !important;
+}
+html[data-button-style="outline"] .home-btn-primary:hover {
+  background: var(--color-emerald-300, #e2d2bb) !important;
+  color: var(--color-zinc-900, #1d1d1d) !important;
+}
+
+/* Ghost style */
+html[data-button-style="ghost"] .home-btn-primary {
+  background: transparent !important;
+  color: #fff !important;
+  border: none !important;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+html[data-button-style="ghost"] .home-btn-primary:hover {
+  background: rgba(255,255,255,0.1) !important;
+  text-decoration-thickness: 2px;
+}
+
+/* Gradient style */
+html[data-button-style="gradient"] .home-btn-primary {
+  background: linear-gradient(135deg, var(--color-emerald-300, #e2d2bb), var(--color-emerald-500, #cdb28e)) !important;
+  color: var(--color-zinc-900, #1d1d1d) !important;
+  border: none !important;
+}
+html[data-button-style="gradient"] .home-btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-emerald-500, #cdb28e), var(--color-emerald-300, #e2d2bb)) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3) !important;
+}
+
+/* Category page buttons */
+html[data-button-style="outline"] .cat-mobile-filter-btn,
+html[data-button-style="outline"] .cat-apply-btn {
+  background: transparent;
+  border: 2px solid var(--color-zinc-900, #1d1d1d);
+  color: var(--color-zinc-900, #1d1d1d);
+}
+
+html[data-button-style="gradient"] .cat-mobile-filter-btn,
+html[data-button-style="gradient"] .cat-apply-btn {
+  background: linear-gradient(135deg, var(--color-zinc-900, #1d1d1d), var(--color-zinc-700, #404040));
+}
+
+html[data-button-style="outline"] .cat-chip {
+  background: transparent;
+  border: 1.5px solid var(--color-zinc-900, #1d1d1d);
+  color: var(--color-zinc-900, #1d1d1d);
+}
+
+/* --- Quick View — hide/show overlay based on config --- */
+html[data-show-quick-view="false"] .cat-card-hover-overlay {
+  display: none !important;
+}
+
+/* --- CTA subscribe section uses accent + border radius --- */
+.home-cta-banner {
+  border-radius: var(--app-border-radius, 0px);
+  background: linear-gradient(to right, var(--app-accent-color, #FF0000), color-mix(in srgb, var(--app-accent-color, #FF0000), white 20%));
+}
+
+/* --- Section title --- */
+.home-section-title {
+  color: var(--color-zinc-900, #1d1d1d);
+}
+
+/* --- Detail product page — border radius on images and buttons --- */
+.detail-main-image,
+.detail-thumb,
+.detail-gallery img {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+/* --- Detail page add-to-cart button --- */
+.detail-add-btn,
+.detail-buy-btn {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+html[data-button-style="outline"] .detail-add-btn {
+  background: transparent;
+  border: 2px solid var(--color-zinc-900, #1d1d1d);
+  color: var(--color-zinc-900, #1d1d1d);
+}
+
+html[data-button-style="gradient"] .detail-add-btn {
+  background: linear-gradient(135deg, var(--color-zinc-900, #1d1d1d), var(--color-zinc-700, #404040));
+}
+
+/* --- Cart page buttons --- */
+.cart-checkout-btn {
+  border-radius: var(--app-border-radius, 0px);
+}
+
+/* --- Banner show/hide --- */
+html[data-show-banner="false"] .home-page > section:first-child {
+  display: none;
+}
+
+/* --- Announcement Bar --- */
+.announcement-bar {
+  display: none;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: var(--app-accent-color, #FF0000);
+  color: #fff;
+}
+
+html[data-announcement-bar="true"] .announcement-bar {
+  display: block;
+}
+
+/* --- Category page sidebar checkbox checked — use dynamic color --- */
+.cat-checkbox:checked {
+  background: var(--color-zinc-900, #1d1d1d);
+  border-color: var(--color-zinc-900, #1d1d1d);
+}
+
+/* --- Link accent color (Ver más links) --- */
+.home-page a.text-emerald-700 {
+  color: var(--color-emerald-700, #977b58);
+}
+.home-page a.text-emerald-700:hover {
+  color: var(--color-emerald-900, #665138);
 }

@@ -1,0 +1,17 @@
+import { inject } from '@angular/core';
+import { Router, CanActivateFn } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+export const adminGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isAdmin) {
+    return true;
+  }
+
+  // Si no es admin, redirigir al inicio y abrir el modal
+  router.navigate(['/']);
+  authService.openModal();
+  return false;
+};

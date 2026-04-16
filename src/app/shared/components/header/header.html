@@ -109,9 +109,47 @@
         </a> -->
 
         <!-- Cuenta -->
-        <a href="#" class="header-icon-btn rounded-full hidden! lg:inline-flex!" aria-label="Mi cuenta" title="Cuenta">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-        </a>
+        <div class="relative group" (click)="$event.stopPropagation()">
+          <button (click)="handleAccountClick($event)" class="header-icon-btn rounded-full hidden! lg:inline-flex!" aria-label="Mi cuenta" title="Cuenta">
+            <!-- Icon is filled if user is logged in -->
+            @if (authService.currentUser()) {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-emerald-600" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            } @else {
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+            }
+          </button>
+          
+          <!-- Dropdown Perfil -->
+          @if (profileMenuOpen() && authService.currentUser()) {
+            <div class="absolute right-0 top-full mt-2 w-48 flex-col rounded-xl border border-zinc-100 bg-white shadow-xl z-50">
+              <div class="p-3 border-b border-zinc-100">
+                <p class="text-sm font-bold text-zinc-900 truncate">{{ authService.currentUser()?.name }}</p>
+                <p class="text-xs text-zinc-500 truncate">{{ authService.currentUser()?.email }}</p>
+              </div>
+              <div class="p-1">
+                @if (authService.currentUser()?.role === 'admin') {
+                  <a routerLink="/admin" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-emerald-50 hover:text-emerald-700 transition-colors" (click)="profileMenuOpen.set(false)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                    Panel de Control
+                  </a>
+                }
+                <a href="#" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors" (click)="profileMenuOpen.set(false)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Mi Perfil
+                </a>
+                <a href="#" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-50 hover:text-zinc-900 transition-colors" (click)="profileMenuOpen.set(false)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>
+                  Mis Pedidos
+                </a>
+                <div class="my-1 border-t border-zinc-100"></div>
+                <button (click)="logout()" class="w-full flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-rose-600 hover:bg-rose-50 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                  Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          }
+        </div>
 
         <!-- Carrito -->
         <a href="#" (click)="toggleCart($event)" class="header-icon-btn rounded-full relative -mr-2 lg:mr-0 z-10" aria-label="Carrito" title="Carrito">

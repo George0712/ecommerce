@@ -1,0 +1,183 @@
+<div class="customers-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Clientes</h1>
+      <p class="page-subtitle">Gestiona tu base de clientes y sus datos</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar
+      </button>
+      <button class="btn-primary">
+        <span class="material-symbols-outlined">person_add</span>
+        Agregar Cliente
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" data-color="blue">
+        <span class="material-symbols-outlined">group</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalCustomers }}</span>
+        <span class="stat-label">Total clientes</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="emerald">
+        <span class="material-symbols-outlined">person</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ activeCustomers }}</span>
+        <span class="stat-label">Activos</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="purple">
+        <span class="material-symbols-outlined">person_add</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ newCustomers }}</span>
+        <span class="stat-label">Nuevos</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="amber">
+        <span class="material-symbols-outlined">diamond</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ vipCustomers }}</span>
+        <span class="stat-label">VIP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" placeholder="Buscar por nombre o email..." [(ngModel)]="searchQuery" />
+      </div>
+      <select class="filter-select" [(ngModel)]="selectedStatus">
+        <option value="">Todos los estados</option>
+        @for (s of statuses; track s) {
+          <option [value]="s">{{ s | titlecase }}</option>
+        }
+      </select>
+      <select class="filter-select" [(ngModel)]="selectedCity">
+        <option value="">Todas las ciudades</option>
+        @for (c of cities; track c) {
+          <option [value]="c">{{ c }}</option>
+        }
+      </select>
+      @if (searchQuery || selectedStatus || selectedCity) {
+        <button class="clear-btn" (click)="clearFilters()">
+          <span class="material-symbols-outlined">close</span>
+          Limpiar
+        </button>
+      }
+    </div>
+    <div class="toolbar-right">
+      <span class="result-count">{{ filteredCustomers.length }} clientes</span>
+    </div>
+  </div>
+
+  <!-- Bulk Actions -->
+  @if (selectedIds().size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-count">{{ selectedIds().size }} seleccionados</span>
+      <div class="bulk-actions">
+        <button class="bulk-btn"><span class="material-symbols-outlined">mail</span> Enviar email</button>
+        <button class="bulk-btn danger"><span class="material-symbols-outlined">delete</span> Eliminar</button>
+      </div>
+    </div>
+  }
+
+  <!-- Table -->
+  <div class="table-card">
+    <div class="table-wrapper">
+      <table class="customers-table">
+        <thead>
+          <tr>
+            <th class="th-check">
+              <input type="checkbox" class="custom-check" [checked]="selectAll()" (change)="toggleSelectAll()" />
+            </th>
+            <th class="th-customer">Cliente</th>
+            <th>Ciudad</th>
+            <th>Pedidos</th>
+            <th>Total gastado</th>
+            <th>Último pedido</th>
+            <th>Estado</th>
+            <th>Etiquetas</th>
+            <th class="th-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (customer of filteredCustomers; track customer.id) {
+            <tr [class.selected]="isSelected(customer.id)">
+              <td class="td-check">
+                <input type="checkbox" class="custom-check" [checked]="isSelected(customer.id)" (change)="toggleSelect(customer.id)" />
+              </td>
+              <td class="td-customer">
+                <div class="customer-avatar" [style.background]="getAvatarColor(customer.id)">
+                  {{ getInitials(customer.name) }}
+                </div>
+                <div class="customer-info">
+                  <span class="customer-name">{{ customer.name }}</span>
+                  <span class="customer-email">{{ customer.email }}</span>
+                </div>
+              </td>
+              <td class="td-city">
+                <span class="city-badge">
+                  <span class="material-symbols-outlined">location_on</span>
+                  {{ customer.city }}
+                </span>
+              </td>
+              <td class="td-orders">{{ customer.totalOrders }}</td>
+              <td class="td-spent">{{ customer.totalSpent }}</td>
+              <td class="td-last-order">{{ customer.lastOrder }}</td>
+              <td>
+                <span class="status-badge" [class]="getStatusClass(customer.status)">
+                  {{ customer.status | titlecase }}
+                </span>
+              </td>
+              <td class="td-tags">
+                @for (tag of customer.tags; track tag) {
+                  <span class="tag-badge" [class]="'tag-' + tag.toLowerCase()">{{ tag }}</span>
+                }
+                @if (customer.tags.length === 0) {
+                  <span class="no-tags">—</span>
+                }
+              </td>
+              <td class="td-actions">
+                <button class="action-btn" title="Ver detalle">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+                <button class="action-btn" title="Enviar email">
+                  <span class="material-symbols-outlined">mail</span>
+                </button>
+                <button class="action-btn danger" title="Eliminar">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (filteredCustomers.length === 0) {
+      <div class="empty-state">
+        <span class="material-symbols-outlined empty-icon">group_off</span>
+        <h3>No se encontraron clientes</h3>
+        <p>Intenta ajustar los filtros de búsqueda</p>
+      </div>
+    }
+  </div>
+</div>

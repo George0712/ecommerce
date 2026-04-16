@@ -1,0 +1,582 @@
+<div class="settings-page">
+  <!-- Save Toast -->
+  @if (showSaveToast()) {
+    <div class="save-toast">
+      <span class="material-symbols-outlined">check_circle</span>
+      Cambios guardados exitosamente
+    </div>
+  }
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Configuración</h1>
+      <p class="page-subtitle">Personaliza y administra los ajustes de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary" (click)="saveSettings()">
+        <span class="material-symbols-outlined">save</span>
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+
+  <!-- Settings Layout -->
+  <div class="settings-layout">
+    <!-- Navigation Sidebar -->
+    <nav class="settings-nav">
+      @for (section of sections; track section.id) {
+        <button
+          class="nav-item"
+          [class.active]="activeSection() === section.id"
+          (click)="setSection(section.id)"
+        >
+          <span class="material-symbols-outlined">{{ section.icon }}</span>
+          {{ section.label }}
+        </button>
+      }
+    </nav>
+
+    <!-- Content Area -->
+    <div class="settings-content">
+
+      <!-- GENERAL -->
+      @if (activeSection() === 'general') {
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="accent">
+              <span class="material-symbols-outlined">store</span>
+            </div>
+            <div>
+              <h2 class="card-title">Información General</h2>
+              <p class="card-desc">Datos básicos de tu tienda</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Nombre de la tienda</label>
+              <input type="text" class="form-input" [(ngModel)]="storeName" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email de contacto</label>
+              <input type="email" class="form-input" [(ngModel)]="storeEmail" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teléfono</label>
+              <input type="tel" class="form-input" [(ngModel)]="storePhone" />
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Dirección</label>
+              <input type="text" class="form-input" [(ngModel)]="storeAddress" />
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="blue">
+              <span class="material-symbols-outlined">language</span>
+            </div>
+            <div>
+              <h2 class="card-title">Regional</h2>
+              <p class="card-desc">Moneda, idioma y zona horaria</p>
+            </div>
+          </div>
+          <div class="form-grid three-cols">
+            <div class="form-group">
+              <label class="form-label">Moneda</label>
+              <select class="form-select" [(ngModel)]="storeCurrency">
+                @for (c of currencies; track c) {
+                  <option [value]="c">{{ c }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Idioma</label>
+              <select class="form-select" [(ngModel)]="storeLanguage">
+                @for (l of languages; track l.value) {
+                  <option [value]="l.value">{{ l.label }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Zona horaria</label>
+              <select class="form-select" [(ngModel)]="storeTimezone">
+                @for (tz of timezones; track tz) {
+                  <option [value]="tz">{{ tz }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- NOTIFICATIONS -->
+      @if (activeSection() === 'notifications') {
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="purple">
+              <span class="material-symbols-outlined">notifications</span>
+            </div>
+            <div>
+              <h2 class="card-title">Notificaciones</h2>
+              <p class="card-desc">Configura qué alertas deseas recibir</p>
+            </div>
+          </div>
+          <div class="toggles-list">
+            @for (setting of notificationSettings; track setting.id) {
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">{{ setting.label }}</span>
+                  <span class="toggle-desc">{{ setting.description }}</span>
+                </div>
+                <button class="toggle-switch" [class.active]="setting.enabled" (click)="toggleSetting(setting)">
+                  <span class="toggle-knob"></span>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- SHIPPING -->
+      @if (activeSection() === 'shipping') {
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="emerald">
+              <span class="material-symbols-outlined">local_shipping</span>
+            </div>
+            <div>
+              <h2 class="card-title">Configuración de Envíos</h2>
+              <p class="card-desc">Costos, umbrales y transportadoras</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Envío gratis desde (COP)</label>
+              <div class="input-with-prefix">
+                <span class="input-prefix">$</span>
+                <input type="text" class="form-input" [(ngModel)]="freeShippingThreshold" />
+              </div>
+              <span class="form-hint">Los pedidos superiores a este monto tendrán envío gratis</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Costo de envío estándar (COP)</label>
+              <div class="input-with-prefix">
+                <span class="input-prefix">$</span>
+                <input type="text" class="form-input" [(ngModel)]="defaultShippingCost" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="blue">
+              <span class="material-symbols-outlined">apartment</span>
+            </div>
+            <div>
+              <h2 class="card-title">Transportadoras</h2>
+              <p class="card-desc">Habilita o deshabilita proveedores de envío</p>
+            </div>
+          </div>
+          <div class="toggles-list">
+            @for (provider of shippingProviders; track provider.id) {
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">{{ provider.label }}</span>
+                  <span class="toggle-desc">{{ provider.description }}</span>
+                </div>
+                <button class="toggle-switch" [class.active]="provider.enabled" (click)="toggleSetting(provider)">
+                  <span class="toggle-knob"></span>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- PAYMENTS -->
+      @if (activeSection() === 'payments') {
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="amber">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div>
+              <h2 class="card-title">Métodos de Pago</h2>
+              <p class="card-desc">Configura los métodos de pago aceptados</p>
+            </div>
+          </div>
+          <div class="toggles-list">
+            @for (pm of paymentMethods; track pm.id) {
+              <div class="toggle-row">
+                <div class="toggle-info">
+                  <span class="toggle-label">{{ pm.label }}</span>
+                  <span class="toggle-desc">{{ pm.description }}</span>
+                </div>
+                <button class="toggle-switch" [class.active]="pm.enabled" (click)="toggleSetting(pm)">
+                  <span class="toggle-knob"></span>
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- ========== APPEARANCE ========== -->
+      @if (activeSection() === 'appearance') {
+
+        <!-- Preset Themes -->
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="purple">
+              <span class="material-symbols-outlined">auto_awesome</span>
+            </div>
+            <div>
+              <h2 class="card-title">Temas Predefinidos</h2>
+              <p class="card-desc">Aplica un tema completo con un clic — ideal para empezar rápido</p>
+            </div>
+          </div>
+          <div class="presets-grid">
+            @for (preset of presets; track preset.name) {
+              <button class="preset-card" (click)="applyPreset(preset)">
+                <div class="preset-colors">
+                  <span class="preset-swatch" [style.background]="preset.primary"></span>
+                  <span class="preset-swatch" [style.background]="preset.secondary"></span>
+                  <span class="preset-swatch small" [style.background]="preset.accent"></span>
+                </div>
+                <div class="preset-info">
+                  <span class="material-symbols-outlined preset-icon">{{ preset.icon }}</span>
+                  <span class="preset-name">{{ preset.name }}</span>
+                </div>
+              </button>
+            }
+          </div>
+          <button class="reset-btn" (click)="resetAppearance()">
+            <span class="material-symbols-outlined">restart_alt</span>
+            Restaurar valores por defecto
+          </button>
+        </div>
+
+        <!-- Colors -->
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="accent">
+              <span class="material-symbols-outlined">palette</span>
+            </div>
+            <div>
+              <h2 class="card-title">Colores</h2>
+              <p class="card-desc">Personaliza la paleta de colores de tu tienda</p>
+            </div>
+          </div>
+          <div class="form-grid three-cols">
+            <div class="form-group">
+              <label class="form-label">Color primario</label>
+              <div class="color-picker-row">
+                <input type="color" class="color-input" [ngModel]="config.primaryColor" (ngModelChange)="onColorChange('primaryColor', $event)" />
+                <input type="text" class="form-input color-text" [ngModel]="config.primaryColor" (ngModelChange)="onColorChange('primaryColor', $event)" />
+              </div>
+              <span class="form-hint">Botones, enlaces, acentos</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Color secundario</label>
+              <div class="color-picker-row">
+                <input type="color" class="color-input" [ngModel]="config.secondaryColor" (ngModelChange)="onColorChange('secondaryColor', $event)" />
+                <input type="text" class="form-input color-text" [ngModel]="config.secondaryColor" (ngModelChange)="onColorChange('secondaryColor', $event)" />
+              </div>
+              <span class="form-hint">Fondos oscuros, textos</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Color de acento (CTA)</label>
+              <div class="color-picker-row">
+                <input type="color" class="color-input" [ngModel]="config.accentColor" (ngModelChange)="onColorChange('accentColor', $event)" />
+                <input type="text" class="form-input color-text" [ngModel]="config.accentColor" (ngModelChange)="onColorChange('accentColor', $event)" />
+              </div>
+              <span class="form-hint">Banners, promociones</span>
+            </div>
+          </div>
+
+          <!-- Color preview -->
+          <div class="color-preview">
+            <div class="color-preview-bar" [style.background]="config.primaryColor"></div>
+            <div class="color-preview-bar" [style.background]="config.secondaryColor"></div>
+            <div class="color-preview-bar accent" [style.background]="config.accentColor"></div>
+          </div>
+        </div>
+
+        <!-- Typography -->
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="blue">
+              <span class="material-symbols-outlined">text_fields</span>
+            </div>
+            <div>
+              <h2 class="card-title">Tipografía</h2>
+              <p class="card-desc">Elige las fuentes que definen la personalidad de tu marca</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Fuente del cuerpo</label>
+              <select class="form-select" [ngModel]="config.fontFamily" (ngModelChange)="onSelectChange('fontFamily', $event)">
+                @for (font of fonts; track font.value) {
+                  <option [value]="font.value">{{ font.label }} — {{ font.category }}</option>
+                }
+              </select>
+              <span class="font-preview" [style.fontFamily]="config.fontFamily + ', sans-serif'">
+                Aa Bb Cc 123 — {{ config.fontFamily }}
+              </span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fuente de títulos</label>
+              <select class="form-select" [ngModel]="config.headingFont" (ngModelChange)="onSelectChange('headingFont', $event)">
+                @for (font of fonts; track font.value) {
+                  <option [value]="font.value">{{ font.label }} — {{ font.category }}</option>
+                }
+              </select>
+              <span class="font-preview heading" [style.fontFamily]="config.headingFont + ', sans-serif'">
+                Título de Ejemplo
+              </span>
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Tamaño de fuente base</label>
+            <div class="option-buttons">
+              @for (size of fontSizes; track size.value) {
+                <button
+                  class="option-btn"
+                  [class.active]="config.fontSize === size.value"
+                  (click)="onSelectChange('fontSize', size.value)"
+                >
+                  <span class="option-btn-label">{{ size.label }}</span>
+                  <span class="option-btn-desc">{{ size.desc }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Layout & Shape -->
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="emerald">
+              <span class="material-symbols-outlined">dashboard_customize</span>
+            </div>
+            <div>
+              <h2 class="card-title">Diseño y Forma</h2>
+              <p class="card-desc">Controla el estilo visual general de la interfaz</p>
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Bordes redondeados</label>
+            <div class="option-buttons">
+              @for (r of radiusOptions; track r.value) {
+                <button
+                  class="option-btn"
+                  [class.active]="config.borderRadius === r.value"
+                  (click)="onSelectChange('borderRadius', r.value)"
+                >
+                  <span class="radius-preview" [style.borderRadius]="r.preview"></span>
+                  <span class="option-btn-label">{{ r.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Ancho del contenedor</label>
+            <div class="option-buttons">
+              @for (w of containerOptions; track w.value) {
+                <button
+                  class="option-btn"
+                  [class.active]="config.containerWidth === w.value"
+                  (click)="onSelectChange('containerWidth', w.value)"
+                >
+                  <span class="option-btn-label">{{ w.label }}</span>
+                  <span class="option-btn-desc">{{ w.desc }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Estilo de botones</label>
+            <div class="option-buttons">
+              @for (b of buttonStyles; track b.value) {
+                <button
+                  class="option-btn"
+                  [class.active]="config.buttonStyle === b.value"
+                  (click)="onSelectChange('buttonStyle', b.value)"
+                >
+                  <span class="material-symbols-outlined option-icon">{{ b.icon }}</span>
+                  <span class="option-btn-label">{{ b.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Estilo del header</label>
+            <div class="option-buttons">
+              @for (h of headerStyles; track h.value) {
+                <button
+                  class="option-btn"
+                  [class.active]="config.headerStyle === h.value"
+                  (click)="onSelectChange('headerStyle', h.value)"
+                >
+                  <span class="material-symbols-outlined option-icon">{{ h.icon }}</span>
+                  <span class="option-btn-label">{{ h.label }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="option-strip">
+            <label class="form-label">Columnas de productos</label>
+            <div class="option-buttons">
+              @for (col of columnOptions; track col) {
+                <button
+                  class="option-btn compact"
+                  [class.active]="config.productColumns === col"
+                  (click)="onSelectChange('productColumns', col)"
+                >
+                  <span class="option-btn-label">{{ col }}</span>
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 16px;">
+            <label class="form-label">Productos por página</label>
+            <select class="form-select inline-select" [ngModel]="config.productsPerPage" (ngModelChange)="onSelectChange('productsPerPage', $event)">
+              @for (opt of perPageOptions; track opt) {
+                <option [value]="opt">{{ opt }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Features & Toggles -->
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="amber">
+              <span class="material-symbols-outlined">toggle_on</span>
+            </div>
+            <div>
+              <h2 class="card-title">Funcionalidades</h2>
+              <p class="card-desc">Activa o desactiva características de la tienda</p>
+            </div>
+          </div>
+          <div class="toggles-list">
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Banner principal (Hero)</span>
+                <span class="toggle-desc">Mostrar el carrusel hero en la página de inicio</span>
+              </div>
+              <button class="toggle-switch" [class.active]="config.showBanner" (click)="onToggleChange('showBanner')">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Reseñas de productos</span>
+                <span class="toggle-desc">Permitir que los clientes dejen reseñas</span>
+              </div>
+              <button class="toggle-switch" [class.active]="config.showReviews" (click)="onToggleChange('showReviews')">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Lista de deseos</span>
+                <span class="toggle-desc">Permitir guardar productos como favoritos</span>
+              </div>
+              <button class="toggle-switch" [class.active]="config.enableWishlist" (click)="onToggleChange('enableWishlist')">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Vista rápida</span>
+                <span class="toggle-desc">Mostrar modal con detalles rápidos del producto</span>
+              </div>
+              <button class="toggle-switch" [class.active]="config.showQuickView" (click)="onToggleChange('showQuickView')">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+            <div class="toggle-row">
+              <div class="toggle-info">
+                <span class="toggle-label">Barra de anuncios</span>
+                <span class="toggle-desc">Mostrar barra superior con mensaje personalizado</span>
+              </div>
+              <button class="toggle-switch" [class.active]="config.announcementBar" (click)="onToggleChange('announcementBar')">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+          </div>
+
+          @if (config.announcementBar) {
+            <div class="form-group" style="margin-top: 16px;">
+              <label class="form-label">Texto del anuncio</label>
+              <input type="text" class="form-input" [ngModel]="config.announcementText" (ngModelChange)="onTextChange('announcementText', $event)" />
+            </div>
+          }
+        </div>
+      }
+
+      <!-- SEO -->
+      @if (activeSection() === 'seo') {
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="emerald">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+            <div>
+              <h2 class="card-title">SEO Global</h2>
+              <p class="card-desc">Optimización para motores de búsqueda</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Título del sitio</label>
+            <input type="text" class="form-input" [(ngModel)]="seoTitle" />
+            <span class="form-hint char-count" [class.over]="seoTitle.length > 60">{{ seoTitle.length }}/60 caracteres</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Meta descripción</label>
+            <textarea class="form-textarea" rows="3" [(ngModel)]="seoDescription"></textarea>
+            <span class="form-hint char-count" [class.over]="seoDescription.length > 160">{{ seoDescription.length }}/160 caracteres</span>
+          </div>
+          <div class="seo-preview">
+            <span class="seo-preview-url">sportstyle.co</span>
+            <span class="seo-preview-title">{{ seoTitle || 'Título del sitio' }}</span>
+            <span class="seo-preview-desc">{{ seoDescription || 'Descripción del sitio...' }}</span>
+          </div>
+        </div>
+        <div class="settings-card">
+          <div class="card-header-row">
+            <div class="card-icon-wrap" data-color="blue">
+              <span class="material-symbols-outlined">analytics</span>
+            </div>
+            <div>
+              <h2 class="card-title">Analytics & Tracking</h2>
+              <p class="card-desc">Conecta tus herramientas de análisis</p>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Google Analytics ID</label>
+              <input type="text" class="form-input mono-input" placeholder="G-XXXXXXXXXX" [(ngModel)]="googleAnalyticsId" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Facebook Pixel ID</label>
+              <input type="text" class="form-input mono-input" placeholder="123456789012345" [(ngModel)]="facebookPixelId" />
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

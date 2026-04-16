@@ -1,0 +1,304 @@
+<div class="categories-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-text">
+      <h1 class="page-title">Categorías</h1>
+      <p class="page-subtitle">Organiza los productos de tu tienda</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-outline">
+        <span class="material-symbols-outlined">download</span>
+        Exportar
+      </button>
+      <a routerLink="/admin/categorias/nueva" class="btn-primary">
+        <span class="material-symbols-outlined">add</span>
+        Nueva Categoría
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" data-color="blue">
+        <span class="material-symbols-outlined">category</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalCategories }}</span>
+        <span class="stat-label">Total categorías</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="emerald">
+        <span class="material-symbols-outlined">check_circle</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ activeCategories }}</span>
+        <span class="stat-label">Activas</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="amber">
+        <span class="material-symbols-outlined">pause_circle</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ inactiveCategories }}</span>
+        <span class="stat-label">Inactivas</span>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" data-color="accent">
+        <span class="material-symbols-outlined">inventory_2</span>
+      </div>
+      <div class="stat-info">
+        <span class="stat-value">{{ totalProducts }}</span>
+        <span class="stat-label">Productos totales</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input
+          type="text"
+          placeholder="Buscar por nombre o slug..."
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+      <select class="filter-select" [(ngModel)]="selectedStatus">
+        <option value="">Todos los estados</option>
+        @for (status of statuses; track status) {
+          <option [value]="status">{{ status | titlecase }}</option>
+        }
+      </select>
+      @if (searchQuery || selectedStatus) {
+        <button class="clear-btn" (click)="clearFilters()">
+          <span class="material-symbols-outlined">close</span>
+          Limpiar
+        </button>
+      }
+    </div>
+    <div class="toolbar-right">
+      <span class="result-count">{{ filteredCategories.length }} categorías</span>
+      <div class="view-toggle">
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'table'"
+          (click)="setView('table')"
+          aria-label="Vista tabla"
+        >
+          <span class="material-symbols-outlined">view_list</span>
+        </button>
+        <button
+          class="view-btn"
+          [class.active]="currentView() === 'grid'"
+          (click)="setView('grid')"
+          aria-label="Vista grilla"
+        >
+          <span class="material-symbols-outlined">grid_view</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  @if (selectedIds().size > 0) {
+    <div class="bulk-bar">
+      <span class="bulk-count">{{ selectedIds().size }} seleccionadas</span>
+      <div class="bulk-actions">
+        <button class="bulk-btn danger" (click)="bulkDelete()">
+          <span class="material-symbols-outlined">delete</span> Eliminar
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- TABLE VIEW -->
+  @if (currentView() === 'table') {
+    <div class="table-card">
+      <div class="table-wrapper">
+        <table class="categories-table">
+          <thead>
+            <tr>
+              <th class="th-check">
+                <input
+                  type="checkbox"
+                  class="custom-check"
+                  [checked]="selectAll()"
+                  (change)="toggleSelectAll()"
+                />
+              </th>
+              <th class="th-category">Categoría</th>
+              <th>Slug</th>
+              <th>Productos</th>
+              <th>Orden</th>
+              <th>Estado</th>
+              <th>Creada</th>
+              <th class="th-actions">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (category of filteredCategories; track category.id) {
+              <tr [class.selected]="isSelected(category.id)">
+                <td class="td-check">
+                  <input
+                    type="checkbox"
+                    class="custom-check"
+                    [checked]="isSelected(category.id)"
+                    (change)="toggleSelect(category.id)"
+                  />
+                </td>
+                <td class="td-category">
+                  <div class="category-icon-wrap">
+                    <span class="material-symbols-outlined">{{ category.icon }}</span>
+                  </div>
+                  <div class="category-info">
+                    <span class="category-name">{{ category.name }}</span>
+                    <span class="category-desc">{{ category.description | slice:0:50 }}...</span>
+                  </div>
+                </td>
+                <td class="td-slug">{{ category.slug }}</td>
+                <td>
+                  <span class="product-count-badge">
+                    <span class="material-symbols-outlined">inventory_2</span>
+                    {{ category.productCount }}
+                  </span>
+                </td>
+                <td class="td-order">{{ category.order }}</td>
+                <td>
+                  <button
+                    class="status-toggle"
+                    [class]="getStatusClass(category.status)"
+                    (click)="toggleCategoryStatus(category.id)"
+                    [title]="'Clic para ' + (category.status === 'activa' ? 'desactivar' : 'activar')"
+                  >
+                    <span class="status-dot-inner"></span>
+                    {{ category.status | titlecase }}
+                  </button>
+                </td>
+                <td class="td-date">{{ category.createdAt }}</td>
+                <td class="td-actions">
+                  <a
+                    class="action-btn"
+                    title="Editar"
+                    [routerLink]="['/admin/categorias/nueva']"
+                    [queryParams]="{ id: category.id }"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </a>
+                  <button class="action-btn danger" title="Eliminar" (click)="confirmDelete(category.id)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (filteredCategories.length === 0) {
+        <div class="empty-state">
+          <span class="material-symbols-outlined empty-icon">category</span>
+          <h3>No se encontraron categorías</h3>
+          <p>Intenta ajustar los filtros o crea una nueva categoría</p>
+          <a routerLink="/admin/categorias/nueva" class="btn-primary">
+            <span class="material-symbols-outlined">add</span>
+            Nueva Categoría
+          </a>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- GRID VIEW -->
+  @if (currentView() === 'grid') {
+    <div class="categories-grid">
+      @for (category of filteredCategories; track category.id) {
+        <div class="category-card" [class.selected]="isSelected(category.id)">
+          <div class="card-image-wrap">
+            <img [src]="category.image" [alt]="category.name" class="card-image" />
+            <div class="card-overlay">
+              <input
+                type="checkbox"
+                class="custom-check"
+                [checked]="isSelected(category.id)"
+                (change)="toggleSelect(category.id)"
+              />
+              <button
+                class="status-toggle small"
+                [class]="getStatusClass(category.status)"
+                (click)="toggleCategoryStatus(category.id)"
+              >
+                <span class="status-dot-inner"></span>
+                {{ category.status | titlecase }}
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-icon-row">
+              <span class="material-symbols-outlined card-cat-icon">{{ category.icon }}</span>
+              <span class="card-order">#{{ category.order }}</span>
+            </div>
+            <h3 class="card-name">{{ category.name }}</h3>
+            <p class="card-description">{{ category.description | slice:0:80 }}...</p>
+            <div class="card-meta">
+              <span class="product-count-badge">
+                <span class="material-symbols-outlined">inventory_2</span>
+                {{ category.productCount }} productos
+              </span>
+            </div>
+            <div class="card-footer">
+              <span class="card-slug">/{{ category.slug }}</span>
+              <div class="card-actions">
+                <a
+                  class="action-btn"
+                  title="Editar"
+                  [routerLink]="['/admin/categorias/nueva']"
+                  [queryParams]="{ id: category.id }"
+                >
+                  <span class="material-symbols-outlined">edit</span>
+                </a>
+                <button class="action-btn danger" title="Eliminar" (click)="confirmDelete(category.id)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (filteredCategories.length === 0) {
+        <div class="empty-state grid-empty">
+          <span class="material-symbols-outlined empty-icon">category</span>
+          <h3>No se encontraron categorías</h3>
+          <p>Intenta ajustar los filtros o crea una nueva categoría</p>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- DELETE CONFIRMATION -->
+  @if (showDeleteConfirm()) {
+    <div class="modal-overlay" (click)="cancelDelete()">
+      <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+        <div class="delete-icon-wrap">
+          <span class="material-symbols-outlined">warning</span>
+        </div>
+        <h3 class="delete-title">¿Eliminar categoría?</h3>
+        <p class="delete-desc">
+          Esta acción no se puede deshacer. Los productos asociados quedarán sin categoría.
+        </p>
+        <div class="delete-actions">
+          <button class="btn-secondary" (click)="cancelDelete()">Cancelar</button>
+          <button class="btn-danger" (click)="executeDelete()">
+            <span class="material-symbols-outlined">delete</span>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

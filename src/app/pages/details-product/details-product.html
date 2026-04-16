@@ -1,14 +1,14 @@
-<div class="bg-zinc-100 text-[#1d1d1d] font-sans antialiased pb-0 lg:pb-0">
+<div class="bg-zinc-100 text-zinc-900 font-sans antialiased pb-0 lg:pb-0">
   
   <!-- Breadcrumb -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <nav aria-label="Breadcrumb" class="text-sm">
       <ol class="flex items-center space-x-2 text-zinc-500 w-full">
-        <li class="shrink-0"><a routerLink="/" class="hover:text-[#1d1d1d] hover:underline transition-colors duration-300">Inicio</a></li>
+        <li class="shrink-0"><a routerLink="/" class="hover:text-zinc-900 hover:underline transition-colors duration-300">Inicio</a></li>
         <li class="shrink-0"><span>/</span></li>
-        <li class="shrink-0"><a routerLink="/catalogo" class="hover:text-[#1d1d1d] hover:underline transition-colors duration-300">Catálogo</a></li>
+        <li class="shrink-0"><a routerLink="/catalogo" class="hover:text-zinc-900 hover:underline transition-colors duration-300">Catálogo</a></li>
         <li class="shrink-0"><span>/</span></li>
-        <li class="font-medium text-[#1d1d1d] truncate min-w-0">{{ product.name }}</li>
+        <li class="font-medium text-zinc-900 truncate min-w-0">{{ product.name }}</li>
       </ol>
     </nav>
   </div>
@@ -29,7 +29,7 @@
                 type="button" 
                 (click)="selectImage(i)"
                 class="relative w-full aspect-square overflow-hidden bg-zinc-200 border-2 cursor-pointer transition-all duration-300 ease-out shrink-0"
-                [ngClass]="selectedImageIndex === i ? 'border-[#1d1d1d] shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
+                [ngClass]="selectedImageIndex === i ? 'border-zinc-900 shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
                 [attr.aria-label]="'Ver imagen ' + (i + 1)"
               >
                 <img [src]="img" class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105" alt="" loading="lazy">
@@ -63,7 +63,7 @@
               type="button" 
               (click)="selectImage(i)"
               class="relative flex-none w-20 h-20 aspect-square overflow-hidden bg-zinc-200 border-2 cursor-pointer transition-all duration-300 ease-out snap-start"
-              [ngClass]="selectedImageIndex === i ? 'border-[#1d1d1d] shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
+              [ngClass]="selectedImageIndex === i ? 'border-zinc-900 shadow-md' : 'border-transparent hover:border-zinc-400 hover:shadow-sm'"
               [attr.aria-label]="'Ver imagen ' + (i + 1)"
             >
               <img [src]="img" class="absolute inset-0 w-full h-full object-cover object-center" alt="" loading="lazy">
@@ -76,12 +76,12 @@
       <div class="flex flex-col">
         <!-- Header -->
         <div class="mb-6 border-b border-zinc-200 pb-6 mt-2 lg:mt-0">
-          <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#1d1d1d]/60 mb-2">{{ product.brand }}</p>
-          <h1 class="text-3xl sm:text-4xl font-black uppercase text-[#1d1d1d] italic tracking-tight leading-[1.05]">
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-900/60 mb-2">{{ product.brand }}</p>
+          <h1 class="text-3xl sm:text-4xl font-black uppercase text-zinc-900 italic tracking-tight leading-[1.05]">
             {{ product.name }}
           </h1>
           <div class="flex items-baseline gap-3 mt-5">
-            <p class="text-2xl font-bold tabular-nums text-[#1d1d1d]">
+            <p class="text-2xl font-bold tabular-nums text-zinc-900">
               {{ formatCOP(product.price) }}
             </p>
             @if (product.originalPrice) {
@@ -95,7 +95,7 @@
 
         <!-- Color Selector -->
         <div class="mb-6">
-          <h3 class="text-sm font-bold uppercase tracking-wide text-[#1d1d1d] mb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wide text-zinc-900 mb-3">
             Color: <span class="text-zinc-500 font-normal normal-case ml-1">{{ product.colors[selectedColorIndex].label }}</span>
           </h3>
           <div class="flex items-center gap-3">
@@ -106,7 +106,7 @@
                 [attr.aria-label]="'Seleccionar color ' + color.label"
                 class="relative h-10 w-10 rounded-full border cursor-pointer focus:outline-none transition-all duration-300 ease-out"
                 [ngClass]="selectedColorIndex === i 
-                  ? 'ring-2 ring-offset-2 ring-[#1d1d1d] scale-110 border-[#1d1d1d]' 
+                  ? 'ring-2 ring-offset-2 ring-zinc-900 scale-110 border-zinc-900' 
                   : 'border-zinc-300 hover:scale-110 hover:shadow-md'"
                 [style.backgroundColor]="color.code"
               >
@@ -120,16 +120,16 @@
           @if (isOneSize) {
             <!-- Talla Única -->
             <div class="flex items-center gap-3 mb-2">
-              <h3 class="text-sm font-bold uppercase tracking-wide text-[#1d1d1d]">Talla</h3>
+              <h3 class="text-sm font-bold uppercase tracking-wide text-zinc-900">Talla</h3>
             </div>
-            <div class="inline-flex items-center justify-center h-12 px-8 bg-[#1d1d1d] text-[#e2d2bb] text-sm font-bold uppercase tracking-wider">
+            <div class="inline-flex items-center justify-center h-12 px-8 bg-zinc-900 text-emerald-300 text-sm font-bold uppercase tracking-wider">
               Talla Única
             </div>
           } @else {
             <!-- Multiple sizes -->
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-sm font-bold uppercase tracking-wide text-[#1d1d1d]">Talla</h3>
-              <a href="#" class="text-sm font-medium text-[#1d1d1d] underline underline-offset-4 hover:text-zinc-500 transition-colors duration-300 cursor-pointer">Guía de tallas</a>
+              <h3 class="text-sm font-bold uppercase tracking-wide text-zinc-900">Talla</h3>
+              <a routerLink="/info/guia-de-tallas" class="text-sm font-medium text-zinc-900 underline underline-offset-4 hover:text-zinc-500 transition-colors duration-300 cursor-pointer">Guía de tallas</a>
             </div>
             <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
               @for (size of product.sizes; track size.label; let i = $index) {
@@ -138,8 +138,8 @@
                   (click)="selectSize(i)"
                   class="flex items-center justify-center font-medium uppercase h-12 border transition-all duration-300 ease-out"
                   [ngClass]="{
-                    'border-[#1d1d1d] bg-[#1d1d1d] text-[#e2d2bb] shadow-md cursor-pointer': selectedSizeIndex === i,
-                    'border-zinc-300 bg-white text-[#1d1d1d] hover:border-[#1d1d1d] hover:shadow-sm cursor-pointer': selectedSizeIndex !== i && !size.outOfStock,
+                    'border-zinc-900 bg-zinc-900 text-emerald-300 shadow-md cursor-pointer': selectedSizeIndex === i,
+                    'border-zinc-300 bg-white text-zinc-900 hover:border-zinc-900 hover:shadow-sm cursor-pointer': selectedSizeIndex !== i && !size.outOfStock,
                     'cursor-not-allowed bg-zinc-100 text-zinc-400 border-zinc-200 opacity-60': size.outOfStock
                   }"
                   [disabled]="size.outOfStock"
@@ -154,19 +154,19 @@
         <!-- Quantity & Actions -->
         <div class="flex flex-col sm:flex-row gap-4 mb-4">
           <div class="flex items-center border border-zinc-300 bg-white h-[52px] w-full sm:w-36 shrink-0">
-            <button type="button" (click)="decreaseQuantity()" class="flex-1 h-full text-[#1d1d1d] hover:bg-zinc-100 flex items-center justify-center font-bold text-xl transition-colors duration-300 cursor-pointer" aria-label="Reducir cantidad">
+            <button type="button" (click)="decreaseQuantity()" class="flex-1 h-full text-zinc-900 hover:bg-zinc-100 flex items-center justify-center font-bold text-xl transition-colors duration-300 cursor-pointer" aria-label="Reducir cantidad">
               &minus;
             </button>
-            <span class="flex-1 h-full text-center text-sm font-bold text-[#1d1d1d] tabular-nums flex items-center justify-center select-none">{{ quantity }}</span>
-            <button type="button" (click)="increaseQuantity()" class="flex-1 h-full text-[#1d1d1d] hover:bg-zinc-100 flex items-center justify-center font-bold text-xl transition-colors duration-300 cursor-pointer" aria-label="Aumentar cantidad">
+            <span class="flex-1 h-full text-center text-sm font-bold text-zinc-900 tabular-nums flex items-center justify-center select-none">{{ quantity }}</span>
+            <button type="button" (click)="increaseQuantity()" class="flex-1 h-full text-zinc-900 hover:bg-zinc-100 flex items-center justify-center font-bold text-xl transition-colors duration-300 cursor-pointer" aria-label="Aumentar cantidad">
               &#43;
             </button>
           </div>
-          <button (click)="addToCart()" class="flex-1 w-full py-2 bg-white border-2 border-[#1d1d1d] text-[#1d1d1d] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#1d1d1d] hover:text-[#e2d2bb] hover:shadow-lg active:scale-[0.97] cursor-pointer">
+          <button (click)="addToCart()" class="detail-add-btn flex-1 w-full py-2 bg-white border-2 border-zinc-900 text-zinc-900 h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-zinc-900 hover:text-emerald-300 hover:shadow-lg active:scale-[0.97] cursor-pointer">
             Agregar al Carrito
           </button>
         </div>
-        <button (click)="buyNow()" class="w-full bg-[#1d1d1d] text-[#e2d2bb] h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-[#0f0f0f] hover:shadow-xl active:scale-[0.97] mb-10 shadow-lg cursor-pointer">
+        <button (click)="buyNow()" class="detail-buy-btn w-full bg-zinc-900 text-emerald-300 h-[52px] font-bold uppercase tracking-wide transition-all duration-300 ease-out hover:bg-zinc-950 hover:shadow-xl active:scale-[0.97] mb-10 shadow-lg cursor-pointer">
           Comprar Ahora
         </button>
 
@@ -178,9 +178,9 @@
               class="flex items-center justify-between w-full text-left focus:outline-none cursor-pointer group"
               (click)="toggleDescription()"
             >
-              <h3 class="text-sm font-bold uppercase tracking-wide text-[#1d1d1d] group-hover:text-zinc-600 transition-colors duration-300">Descripción y Características</h3>
+              <h3 class="text-sm font-bold uppercase tracking-wide text-zinc-900 group-hover:text-zinc-600 transition-colors duration-300">Descripción y Características</h3>
               <span class="ml-6 flex items-center">
-                <svg [ngClass]="isDescriptionExpanded ? 'rotate-180' : 'rotate-0'" class="h-5 w-5 transform transition-transform duration-300 ease-out text-zinc-400 group-hover:text-[#1d1d1d]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg [ngClass]="isDescriptionExpanded ? 'rotate-180' : 'rotate-0'" class="h-5 w-5 transform transition-transform duration-300 ease-out text-zinc-400 group-hover:text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </span>
@@ -198,7 +198,7 @@
               <ul class="space-y-2.5">
                 @for (feat of product.features; track feat) {
                   <li class="flex items-start gap-2.5 text-sm text-zinc-600">
-                    <span class="mt-1 h-1.5 w-1.5 bg-[#1d1d1d] shrink-0"></span>
+                    <span class="mt-1 h-1.5 w-1.5 bg-zinc-900 shrink-0"></span>
                     {{ feat }}
                   </li>
                 }
@@ -206,7 +206,7 @@
             </div>
           </div>
           <div class="py-5 border-t border-zinc-200">
-            <a href="/shipping-policy" class="flex items-center justify-between w-full text-left font-bold text-sm tracking-wide uppercase text-[#1d1d1d] hover:text-zinc-500 transition-colors duration-300 cursor-pointer group">
+            <a routerLink="/info/tiempos-de-envio" class="flex items-center justify-between w-full text-left font-bold text-sm tracking-wide uppercase text-zinc-900 hover:text-zinc-500 transition-colors duration-300 cursor-pointer group">
               Política de Envíos
               <svg class="h-5 w-5 text-zinc-400 group-hover:translate-x-1 transition-transform duration-300 ease-out" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -222,11 +222,11 @@
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 lg:mt-12" aria-labelledby="related-heading">
     <header class="flex flex-col items-center text-center sm:flex-row sm:items-end sm:justify-between sm:text-left mb-4">
       <div>
-        <h2 id="related-heading" class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-[#1d1d1d]">
+        <h2 id="related-heading" class="text-xl sm:text-2xl font-bold uppercase tracking-tight text-zinc-900">
           Completar el look
         </h2>
       </div>
-      <a href="#" class="text-sm font-bold text-[#1d1d1d] underline-offset-4 transition-colors duration-300 hover:text-zinc-500 hover:underline sm:mt-0 mt-2 cursor-pointer">
+      <a href="#" class="text-sm font-bold text-zinc-900 underline-offset-4 transition-colors duration-300 hover:text-zinc-500 hover:underline sm:mt-0 mt-2 cursor-pointer">
         Ver catálogo
       </a>
     </header>
@@ -245,7 +245,7 @@
           (click)="scrollToProductPage(page, scrollRec)"
           class="h-1.5 transition-all duration-300 cursor-pointer"
           [ngClass]="{
-            'w-8 bg-[#1d1d1d]': recomendadosIndex === page,
+            'w-8 bg-zinc-900': recomendadosIndex === page,
             'w-2 bg-zinc-300 hover:bg-zinc-400': recomendadosIndex !== page
           }"
           [attr.aria-label]="'Ir a página ' + (page + 1)"
@@ -255,11 +255,11 @@
   </section>
 
   <!-- ═══════════ CTA Suscripción ═══════════ -->
-  <section class="bg-linear-to-r from-[#FF0000] to-[#ff2056] py-10 px-4 sm:px-6 lg:px-8 mt-16 md:mt-24 w-full shadow-inner">
+  <section class="home-cta-banner py-10 px-4 sm:px-6 lg:px-8 mt-16 md:mt-24 w-full shadow-inner">
     <div class="mx-auto max-w-7xl flex flex-col items-center justify-between gap-6 md:flex-row text-center md:text-left">
       <div class="flex-1 max-w-2xl">
         <h2 class="text-xl font-black uppercase tracking-tight text-white sm:text-3xl lg:text-4xl">Sé el primero en enterarte</h2>
-        <p class="mt-2 text-sm text-red-100 sm:text-base leading-relaxed">
+        <p class="mt-2 text-sm text-white/75 sm:text-base leading-relaxed">
           Suscríbete y recibe avant-première de <strong class="text-white">nuevas llegadas</strong>, drops exclusivos y promociones antes que nadie.
         </p>
       </div>

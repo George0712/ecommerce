@@ -1,5 +1,5 @@
 .header-root {
-  font-family: 'Poppins', system-ui, sans-serif;
+  font-family: var(--app-font-body, 'Poppins', system-ui, sans-serif);
 }
 
 .header-icon-btn {
@@ -16,7 +16,7 @@
 
 .header-icon-btn:hover {
   background-color: rgb(244 244 245);
-  color: #1d1d1d;
+  color: var(--color-zinc-900, #1d1d1d);
 }
 
 .header-icon-btn:active {
@@ -25,7 +25,7 @@
 }
 
 .header-icon-btn:focus-visible {
-  outline: 2px solid #1d1d1d;
+  outline: 2px solid var(--color-zinc-900, #1d1d1d);
   outline-offset: 2px;
 }
 
